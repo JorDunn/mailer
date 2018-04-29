@@ -13,6 +13,8 @@ pytest = "*"
 flask = "*"
 pony = "*"
 flask-pony = "*"
+pynacl = "*"
+python-jose = "*"
 
 [requires]
 python_version = "3.6"

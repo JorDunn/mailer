@@ -7,3 +7,6 @@ app.config.from_object('config.Config')
 
 pony = Pony(app)
 pony.connect()
+
+if __name__ == '__main__':
+    app.run()
