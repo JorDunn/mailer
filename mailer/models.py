@@ -1,13 +1,12 @@
 from pony.orm import Required, Optional, PrimaryKey
-from mailer.app import pony
+from .app import pony
 import datetime
 import time
 from nacl.pwhash import scrypt
 from jose import jwt
-from mailer.config import Config
+from .config import Config
 
 db = pony.db
-db.generate_mapping(create_tables=True)
 
 
 class Customers(db.Entity):
