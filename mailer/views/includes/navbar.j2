@@ -1,26 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">Mailer</a>
+    <a class="navbar-brand" href="/{% if token %}?token={{ token }}{% endif %}">Mailer</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
             <!--<li class="nav-item {% if current_link == "home" %}active{% endif %}">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/{% if token %}token={{ token }}{% endif %}">Home</a>
             </li>-->
             <li class="nav-item">
-                <a class="nav-link {% if current_link == "queue" %}active{% endif %}" href="/queue">Queue</a>
+                <a class="nav-link {% if current_link == "queue" %}active{% endif %}" href="/queue{% if token %}?token={{ token }}{% endif %}">Queue</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if current_link == "customers" %}active{% endif %}" href="/customers">Customers</a>
+                <a class="nav-link {% if current_link == "customers" %}active{% endif %}" href="/customers{% if token %}?token={{ token }}{% endif %}">Customers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if current_link == "templates" %}active{% endif %}" href="/templates">Templates</a>
+                <a class="nav-link {% if current_link == "templates" %}active{% endif %}" href="/templates{% if token %}?token={{ token }}{% endif %}">Templates</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/login">Login</a>
+                {% if token %}
+                    <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/logout">Logout</a>
+                {% else %}
+                    <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/login">Login</a>
+                {% endif %}
             </li>
         </ul>
     </div>

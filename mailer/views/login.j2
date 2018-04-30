@@ -3,9 +3,15 @@
 {% block content %}
 <br/><br/>
 <div class="col-lg-6 offset-lg-3">
-    <div class="alert alert-danger" role="alert">
-        Invalid username and/or password!
-    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
     <br/>
     <div class="card">
         <div class="card-body">
