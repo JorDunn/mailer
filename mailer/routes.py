@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response
+from flask import Blueprint, render_template, redirect
 from functools import wraps
 
 app_routes = Blueprint(__name__, 'app_routes')
@@ -12,16 +12,27 @@ def login_required(f):
     return f
 
 
-@login_required
+# @login_required
 @app_routes.route('/', methods=['GET'])
 def index():
-    pass
+    return render_template('index.j2', title="Home", current_link="home")
 
 
-@login_required
+@app_routes.route('/login', methods=['GET'])
+def login():
+    return render_template('login.j2', title="Login", current_link="login")
+
+
+# @login_required
+@app_routes.route('/logout', methods=['GET'])
+def logout():
+    return redirect('/login')
+
+
+# @login_required
 @app_routes.route('/queue', methods=['GET'])
 def queue():
-    pass
+    return render_template('queue.j2', title="Queue", current_link="queue")
 
 
 @login_required

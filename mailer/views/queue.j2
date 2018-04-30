@@ -1,0 +1,49 @@
+{% extends "base.j2" %}
+
+{% block content %}
+<br/><br/>
+<div class="col-lg-10 offset-lg-1">
+    <div class="col-lg-12">
+        <a href="/queue/add" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Customer</a>
+        <br/><br/>
+        <table class="table table-striped text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Email</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="queue/edit/1" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                    <th scope="row">example12@domain.tld</th>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>612.216.0000</td>
+                    <td><a href="/queue/remove/1" style="color:red"><span class="oi oi-delete"></span></a></td>
+                </tr>
+                <tr>
+                    <td><a href="queue/edit/1" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                    <th scope="row">example@otherdomain.tld</th>
+                    <td>Amanda</td>
+                    <td>Hugginkiss</td>
+                    <td>123.321.0000</td>
+                    <td><a href="/queue/remove/2" style="color:red"><span class="oi oi-delete"></span></a></td>
+                </tr>
+                <tr>
+                    <td><a href="queue/edit/1" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                    <th scope="row">istheword@domain.tld</th>
+                    <td>Larry</td>
+                    <td>Bird</td>
+                    <td>987.789.0000</td>
+                    <td><a href="/queue/remove/3" style="color:red"><span class="oi oi-delete"></span></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

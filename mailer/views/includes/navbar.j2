@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Mailer</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <!--<li class="nav-item {% if current_link == "home" %}active{% endif %}">
+                <a class="nav-link" href="/">Home</a>
+            </li>-->
+            <li class="nav-item">
+                <a class="nav-link {% if current_link == "queue" %}active{% endif %}" href="/queue">Queue</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if current_link == "customers" %}active{% endif %}" href="/customers">Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if current_link == "templates" %}active{% endif %}" href="/templates">Templates</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/login">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>

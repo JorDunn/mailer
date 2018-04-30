@@ -4,16 +4,7 @@ import time
 from nacl.pwhash import scrypt
 from jose import jwt
 from mailer.config import Config
-
-db = Database()
-
-
-class Franchisees(db.Entity):
-
-    _table_ = 'franchisees'
-
-    franchise_id = PrimaryKey(int, auto=True)
-    name = Required(str)
+from mailer.models import db
 
 
 class Users(db.Entity):
