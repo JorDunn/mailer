@@ -1,4 +1,4 @@
-from pony.orm import Required, Optional, PrimaryKey, Database, db_session
+from pony.orm import Required, Optional, PrimaryKey, Database, db_session, select
 import datetime
 import time
 from nacl.pwhash import scrypt
@@ -6,6 +6,7 @@ from jose import jwt
 from mailer.config import Config
 from mailer.models import db
 from mailer.models.sessions import SessionManager
+from mailer.models.customers import Customers
 from pprint import pprint
 
 
@@ -44,6 +45,13 @@ class QueueManager(object):
     @classmethod
     @db_session
     def get_queue(cls):
-        queue = Queue.select()
-        pprint(queue)
-        return queue
+        data = dict()
+        queue = select((q.queue_id, q.customer_id)
+                       for q in Queue).order_by(1)[:]
+        for q in queue:
+            customer = select((c.customer_id, c.first_name, c.last_name, c.email)
+                              for c in Customers if c.customer_id == q[1])[:]
+            for c in customer:
+                data.update(dict({'customer_id': c[0]}))
+        pprint(data)
+        return data
