@@ -18,15 +18,15 @@
                 </tr>
             </thead>
             <tbody>
-                {% for queue_node in queue %}
-                <tr>
-                    <td><a href="queue/edit/{{ queue_node.customer_id }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                    <th scope="row">{{ queue_node.email }}</th>
-                    <td>{{ queue_node.first_name }}</td>
-                    <td>{{ queue_node.last_name }}</td>
-                    <td>example@iforgotthisfield.crap</td>
-                    <td><a href="/queue/remove/{{ queue_node.customer_id }}" style="color:red"><span class="oi oi-delete"></span></a></td>
-                </tr>
+                {% for items in queue %}
+                    <tr>
+                        <td><a href="queue/edit/{{ queue[items]['queue_id'] }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                        <th scope="row">{{ queue[items]['email'] }}</th>
+                        <td>{{ queue[items]['first_name'] }}</td>
+                        <td>{{ queue[items]['last_name'] }}</td>
+                        <td>{{ queue[items]['phone'] }}</td>
+                        <td><a href="/queue/remove/{{ queue[items]['queue_id'] }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                    </tr>
                 {% endfor %}
                 <tr>
                     <td><a href="queue/edit/1" style="color:navy"><span class="oi oi-pencil"></span></a></td>

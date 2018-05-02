@@ -74,10 +74,9 @@ def queue_add():
 def queue_add_do():
     args = request.args
     data = request.form
-    res, data2 = CustomerManager.add_customer(
-        data['first_name'], data['last_name'], data['email'])
-    if res is not False:
-        if QueueManager.add_queue(data2.customer_id):
+    if CustomerManager.add_customer(data['first_name'], data['last_name'], data['email'], data['phone']):
+        customer = CustomerManager.get_customer(data['email'])
+        if QueueManager.add_queue(customer.customer_id):
             return redirect('/queue?token=' + args['token'])
         else:
             flash("Error adding customer to queue", "queue_error")

@@ -1,4 +1,5 @@
 from pony.orm import Required, Optional, PrimaryKey, Database, db_session, select
+from pony.orm.serialization import to_dict, to_json
 import datetime
 import time
 from nacl.pwhash import scrypt
@@ -8,6 +9,7 @@ from mailer.models import db
 from mailer.models.sessions import SessionManager
 from mailer.models.customers import Customers
 from pprint import pprint
+import json
 
 
 class Queue(db.Entity):
@@ -45,13 +47,15 @@ class QueueManager(object):
     @classmethod
     @db_session
     def get_queue(cls):
-        data = dict()
-        queue = select((q.queue_id, q.customer_id)
-                       for q in Queue).order_by(1)[:]
-        for q in queue:
-            customer = select((c.customer_id, c.first_name, c.last_name, c.email)
-                              for c in Customers if c.customer_id == q[1])[:]
-            for c in customer:
-                data.update(dict({'customer_id': c[0]}))
-        pprint(data)
-        return data
+        json_data = {}
+        try:
+            queue_json = json.loads(to_json(select(q for q in Queue)))
+            for key, data in queue_json['Queue'].items():
+                customer = json.loads(
+                    to_json(select(c for c in Customers if c.customer_id == data['customer_id'])))
+                for key2, data2 in customer['Customers'].items():
+                    json_data[key] = {'queue_id': data['queue_id'], 'customer_id': data2['customer_id'],
+                                      'first_name': data2['first_name'], 'last_name': data2['last_name'], 'email': data2['email'], 'phone': data2['phone']}
+            return json_data
+        except KeyError:
+            return json_data
