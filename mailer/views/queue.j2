@@ -20,7 +20,7 @@
             <tbody>
                 {% for items in queue %}
                     <tr>
-                        <td><a href="queue/edit/{{ queue[items]['queue_id'] }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                        <td><a href="customers/edit/{{ queue[items]['customer_id'] }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                         <th scope="row">{{ queue[items]['email'] }}</th>
                         <td>{{ queue[items]['first_name'] }}</td>
                         <td>{{ queue[items]['last_name'] }}</td>

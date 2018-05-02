@@ -1,0 +1,31 @@
+{% extends "base.j2" %}
+
+{% block content %}
+<br/><br/>
+<div class="col-lg-10 offset-lg-1">
+    <div class="col-lg-12">
+    <a href="/templates/add?token={{ token }}" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Template</a>
+    <br/><br/>
+    <table class="table table-stripped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Added By</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">Reviews</th>
+                <td>04.01.2018</td>
+                <td>Jordan Dunn</td>
+                <td><a href="#">Modify</a></td>
+                <td><a href="#">Delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

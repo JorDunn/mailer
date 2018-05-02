@@ -97,22 +97,11 @@ def queue_remove(queue_id):
         return redirect('/queue?token=' + args['token'])
 
 
-@app_routes.route('/queue/update/<int:queue_id>', methods=['GET'])
-@login_required
-def queue_update(queue_id):
-    pass
-
-
 @app_routes.route('/customers', methods=['GET'])
 @login_required
 def customers():
-    pass
-
-
-@app_routes.route('/customers/add', methods=['GET'])
-@login_required
-def customers_add():
-    pass
+    args = request.args
+    return render_template('customers.j2', title='Customers', token=args['token'], current_link='customers')
 
 
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
@@ -127,13 +116,15 @@ def customers_update(customer_id):
     pass
 
 
-@app_routes.route('/customers/profile/<int:customer_id>', methods=['GET'])
-@login_required
-def customers_profile(customer_id):
-    pass
-
-
 @app_routes.route('/templates', methods=['GET'])
 @login_required
 def templates():
+    args = request.args
+    return render_template('templates.j2', title='Templates', token=args['token'], current_link='templates')
+
+
+@app_routes.route('/templates/add', methods=['GET'])
+@login_required
+def templates_add():
+    args = request.args
     pass
