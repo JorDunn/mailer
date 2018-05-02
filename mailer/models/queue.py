@@ -28,7 +28,8 @@ class QueueManager(object):
         try:
             Queue(customer_id=customer_id)
             return True
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     @classmethod
@@ -36,10 +37,11 @@ class QueueManager(object):
     def remove_queue(cls, queue_id):
         if Queue.exists(queue_id=queue_id):
             try:
-                queue = Queue(queue_id=queue_id)
+                queue = Queue.get(queue_id=queue_id)
                 queue.delete()
                 return True
-            except:
+            except Exception as e:
+                print(e)
                 return False
         else:
             return False
@@ -57,5 +59,6 @@ class QueueManager(object):
                     json_data[key] = {'queue_id': data['queue_id'], 'customer_id': data2['customer_id'],
                                       'first_name': data2['first_name'], 'last_name': data2['last_name'], 'email': data2['email'], 'phone': data2['phone']}
             return json_data
-        except KeyError:
+        except Exception as e:
+            print(e)
             return json_data

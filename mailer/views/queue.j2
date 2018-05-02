@@ -20,38 +20,14 @@
             <tbody>
                 {% for items in queue %}
                     <tr>
-                        <td><a href="queue/edit/{{ queue[items]['queue_id'] }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                        <td><a href="queue/edit/{{ queue[items]['queue_id'] }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                         <th scope="row">{{ queue[items]['email'] }}</th>
                         <td>{{ queue[items]['first_name'] }}</td>
                         <td>{{ queue[items]['last_name'] }}</td>
                         <td>{{ queue[items]['phone'] }}</td>
-                        <td><a href="/queue/remove/{{ queue[items]['queue_id'] }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                        <td><a href="/queue/remove/{{ queue[items]['queue_id'] }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
                     </tr>
                 {% endfor %}
-                <tr>
-                    <td><a href="queue/edit/1" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                    <th scope="row">example12@domain.tld</th>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>612.216.0000</td>
-                    <td><a href="/queue/remove/1" style="color:red"><span class="oi oi-delete"></span></a></td>
-                </tr>
-                <tr>
-                    <td><a href="queue/edit/1" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                    <th scope="row">example@otherdomain.tld</th>
-                    <td>Amanda</td>
-                    <td>Hugginkiss</td>
-                    <td>123.321.0000</td>
-                    <td><a href="/queue/remove/2" style="color:red"><span class="oi oi-delete"></span></a></td>
-                </tr>
-                <tr>
-                    <td><a href="queue/edit/1" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                    <th scope="row">istheword@domain.tld</th>
-                    <td>Larry</td>
-                    <td>Bird</td>
-                    <td>987.789.0000</td>
-                    <td><a href="/queue/remove/3" style="color:red"><span class="oi oi-delete"></span></a></td>
-                </tr>
             </tbody>
         </table>
     </div>

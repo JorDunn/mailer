@@ -89,7 +89,12 @@ def queue_add_do():
 @app_routes.route('/queue/remove/<int:queue_id>', methods=['GET'])
 @login_required
 def queue_remove(queue_id):
-    pass
+    args = request.args
+    if QueueManager.remove_queue(queue_id):
+        return redirect('/queue?token=' + args['token'])
+    else:
+        flash("Error removing customer from queue")
+        return redirect('/queue?token=' + args['token'])
 
 
 @app_routes.route('/queue/update/<int:queue_id>', methods=['GET'])

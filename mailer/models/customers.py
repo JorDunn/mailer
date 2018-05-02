@@ -36,8 +36,8 @@ class CustomerManager(object):
                 pprint(customer)
                 print("Success")
                 return True, customer.customer_id
-            except:
-                print("Couldnt add customer")
+            except Exception as e:
+                print(e)
                 return False
 
     @classmethod
@@ -47,7 +47,8 @@ class CustomerManager(object):
             try:
                 customer = Customers.get(email=email)
                 return customer
-            except:
+            except Exception as e:
+                print(e)
                 return False
 
     @classmethod
@@ -58,7 +59,8 @@ class CustomerManager(object):
                 customer = Customers(customer_id=customer_id)
                 customer.delete()
                 return True
-            except:
+            except Exception as e:
+                print(e)
                 return False
         else:
             return False
@@ -73,7 +75,8 @@ class CustomerManager(object):
                 customer.last_name = last_name
                 customer.email = email
                 return True
-            except:
+            except Exception as e:
+                print(e)
                 return False
         else:
             return False
