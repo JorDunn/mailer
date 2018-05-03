@@ -49,6 +49,8 @@ class QueueManager(object):
     @classmethod
     @db_session
     def get_queue(cls):
+        """Returns a dict with the queue items and customer info for each item. This could probably
+        be a JOIN statement in the future"""
         json_data = {}
         try:
             queue_json = json.loads(to_json(select(q for q in Queue)))

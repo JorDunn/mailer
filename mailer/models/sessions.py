@@ -47,6 +47,7 @@ class SessionManager(object):
     @classmethod
     @db_session
     def validate(cls, token):
+        """Checks to see if a session token is valid still"""
         try:
             token_decoded = jwt.decode(
                 token, Config.SECRET_KEY, algorithms='HS256', issuer='mailer')
