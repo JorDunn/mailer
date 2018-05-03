@@ -11,8 +11,7 @@
                 <tr>
                     <th scope="col"></th>
                     <th scope="col">Email</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Phone</th>
                     <th scope="col"></th>
                 </tr>
@@ -22,8 +21,7 @@
                     <tr>
                         <td><a href="customers/edit/{{ queue[items]['customer_id'] }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                         <th scope="row">{{ queue[items]['email'] }}</th>
-                        <td>{{ queue[items]['first_name'] }}</td>
-                        <td>{{ queue[items]['last_name'] }}</td>
+                        <td>{{ queue[items]['first_name'] }} {{ queue[items]['last_name'] }}</td>
                         <td>{{ queue[items]['phone'] }}</td>
                         <td><a href="/queue/remove/{{ queue[items]['queue_id'] }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
                     </tr>

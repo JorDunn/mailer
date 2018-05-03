@@ -127,4 +127,12 @@ def templates():
 @login_required
 def templates_add():
     args = request.args
-    pass
+    return render_template('templates_add.j2', title='Add Template', token=args['token'], current_link='templates')
+
+
+@app_routes.route('/templates/add/do', methods=['POST'])
+@login_required
+def templates_add_do():
+    args = request.args
+    data = request.form
+    return redirect('/templates?token=' + args['token'])
