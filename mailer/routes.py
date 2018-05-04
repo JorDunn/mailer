@@ -30,7 +30,7 @@ def login_required(f):
 @login_required
 def index():
     args = request.args
-    return render_template('index.j2', title="Home", current_link="home", token=args['token'])
+    return render_template('index.j2', title="Home", current_link="home", token=args['token'], admin_view=False)
 
 
 @app_routes.route('/login', methods=['GET'])

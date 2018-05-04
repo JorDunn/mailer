@@ -1,27 +1,43 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/{% if token %}?token={{ token }}{% endif %}">Mailer</a>
+    {% if admin_view == True %}
+        <a class="navbar-brand" href="/admin{% if token %}?token={{ token }}{% endif %}" style="color:orange">Mailer Admin</a>
+    {% else %}
+        <a class="navbar-brand" href="/{% if token %}?token={{ token }}{% endif %}">Mailer</a>
+    {% endif %}
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <!--<li class="nav-item {% if current_link == "home" %}active{% endif %}">
-                <a class="nav-link" href="/{% if token %}token={{ token }}{% endif %}">Home</a>
-            </li>-->
-            <li class="nav-item">
-                <a class="nav-link {% if current_link == "queue" %}active{% endif %}" href="/queue{% if token %}?token={{ token }}{% endif %}">Queue</a>
+        {% if admin_view == True %}
+            <li class="nav-item {% if current_link == "admin_home" %}active{% endif %}">
+                <a class="nav-link" href="/admin{% if token %}?token={{ token }}{% endif %}">Admin Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {% if current_link == "customers" %}active{% endif %}" href="/customers{% if token %}?token={{ token }}{% endif %}">Customers</a>
+        {% else %}
+            <li class="nav-item {% if current_link == "home" %}active{% endif %}">
+                <a class="nav-link" href="/{% if token %}?token={{ token }}{% endif %}">Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {% if current_link == "templates" %}active{% endif %}" href="/templates{% if token %}?token={{ token }}{% endif %}">Templates</a>
+            <li class="nav-item {% if current_link == "queue" %}active{% endif %}">
+                <a class="nav-link" href="/queue{% if token %}?token={{ token }}{% endif %}">Queue</a>
             </li>
+            <li class="nav-item {% if current_link == "customers" %}active{% endif %}">
+                <a class="nav-link" href="/customers{% if token %}?token={{ token }}{% endif %}">Customers</a>
+            </li>
+            <li class="nav-item {% if current_link == "templates" %}active{% endif %}">
+                <a class="nav-link" href="/templates{% if token %}?token={{ token }}{% endif %}">Templates</a>
+            </li>
+        {% endif %}
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/admin?token={{ token }}">Admin</a>
-            </li>
+            {% if admin_view == True %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/?token={{ token }}">Home</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin?token={{ token }}">Admin</a>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 {% if token %}
                     <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/logout">Logout</a>

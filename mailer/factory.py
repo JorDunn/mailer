@@ -8,7 +8,9 @@ def create_app():
     app.config.from_object('mailer.config.Config')
 
     from mailer.routes import app_routes
+    from mailer.admin_routes import admin_routes
     app.register_blueprint(app_routes)
+    app.register_blueprint(admin_routes)
 
     from mailer.models import db
     try:
