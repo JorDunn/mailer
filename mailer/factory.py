@@ -1,4 +1,5 @@
 from flask import Flask
+
 from mailer.config import Config
 
 

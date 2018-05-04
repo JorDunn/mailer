@@ -1,12 +1,13 @@
-from flask import Blueprint, render_template, redirect, request, flash
-from werkzeug.exceptions import BadRequestKeyError
 from functools import wraps
+from pprint import pprint
+
+from flask import Blueprint, flash, redirect, render_template, request
+from werkzeug.exceptions import BadRequestKeyError
+
+from mailer.models.customers import CustomerManager
+from mailer.models.queue import QueueManager
 from mailer.models.sessions import SessionManager
 from mailer.models.users import UserManager
-from mailer.models.queue import QueueManager
-from mailer.models.customers import CustomerManager
-
-from pprint import pprint
 
 app_routes = Blueprint(__name__, 'app_routes')
 

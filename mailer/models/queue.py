@@ -1,15 +1,18 @@
-from pony.orm import Required, Optional, PrimaryKey, Database, db_session, select
-from pony.orm.serialization import to_dict, to_json
 import datetime
+import json
 import time
-from nacl.pwhash import scrypt
+from pprint import pprint
+
 from jose import jwt
+from nacl.pwhash import scrypt
+from pony.orm import (Database, Optional, PrimaryKey, Required, db_session,
+                      select)
+from pony.orm.serialization import to_dict, to_json
+
 from mailer.config import Config
 from mailer.models import db
-from mailer.models.sessions import SessionManager
 from mailer.models.customers import Customers
-from pprint import pprint
-import json
+from mailer.models.sessions import SessionManager
 
 
 class Queue(db.Entity):
@@ -60,7 +63,7 @@ class QueueManager(object):
                 for key2, data2 in customer['Customers'].items():
                     json_data[key] = {'queue_id': data['queue_id'], 'customer_id': data2['customer_id'],
                                       'first_name': data2['first_name'], 'last_name': data2['last_name'], 'email': data2['email'], 'phone': data2['phone']}
-            return json_data
+                    return json_data
         except Exception as e:
             print(e)
             return json_data

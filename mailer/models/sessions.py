@@ -1,8 +1,10 @@
-from pony.orm import Required, Optional, PrimaryKey, Database, db_session
 import datetime
 import time
-from nacl.pwhash import scrypt
+
 from jose import jwt
+from nacl.pwhash import scrypt
+from pony.orm import Database, Optional, PrimaryKey, Required, db_session
+
 from mailer.config import Config
 from mailer.models import db
 
