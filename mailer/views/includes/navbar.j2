@@ -20,6 +20,9 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
+                <a class="nav-link" href="/admin?token={{ token }}">Admin</a>
+            </li>
+            <li class="nav-item">
                 {% if token %}
                     <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/logout">Logout</a>
                 {% else %}
