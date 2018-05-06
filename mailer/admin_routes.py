@@ -38,11 +38,11 @@ def index():
 @login_required
 def users():
     args = request.args
-    return render_template('users.j2', title="Users", current_link="users", token=args['token'])
+    return render_template('users.j2', title="Users", current_link="users", token=args['token'], admin_view=True)
 
 
 @admin_routes.route('/franchises', methods=['GET'])
 @login_required
 def franchises():
     args = request.args
-    return render_template('franchises.j2', title="Franchises", current_link="franchises", token=args['token'])
+    return render_template('franchises.j2', title="Franchises", current_link="franchises", token=args['token'], admin_view=True)

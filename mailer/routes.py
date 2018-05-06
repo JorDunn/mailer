@@ -35,15 +35,20 @@ def index():
 
 @app_routes.route('/login', methods=['GET'])
 def login():
+    UserManager.first_run()
     return render_template('login.j2', title="Login", current_link="login")
 
 
 @app_routes.route('/login/do', methods=['POST'])
 def login_do():
     data = request.form
-    res = UserManager.validate(data['username'], data['password'])
-    if res is not False:
-        return redirect('/?token='+str(res))
+    if data['username'] and data['password']:
+        res = UserManager.validate(data['username'], data['password'])
+        if res is not False:
+            return redirect('/?token='+str(res))
+        else:
+            flash('Invalid username and/or password', 'login_error')
+            return redirect('/login')
     else:
         flash('Invalid username and/or password', 'login_error')
         return redirect('/login')

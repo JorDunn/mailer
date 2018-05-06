@@ -76,3 +76,11 @@ class UserManager(object):
                 return False
         else:
             return False
+
+    @classmethod
+    @db_session
+    def first_run(cls):
+        if Users.exists(username='tuser'):
+            return False
+        else:
+            UserManager.add_user(0, 'Test', 'User', 'tuser', 'testing', True)
