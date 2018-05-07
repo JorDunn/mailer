@@ -58,7 +58,7 @@ def users_add_do():
 
 @admin_routes.route('/users/remove/<int:user_id>', methods=['GET'])
 @login_required
-def users_remove(user_id):
+def users_remove(user_id: int):
     args = request.args
     return redirect('/users?token=' + args['token'])
 
@@ -85,8 +85,8 @@ def franchises_add_do():
     return redirect('/franchises?token=' + args['token'])
 
 
-@admin_routes.route('/franchises/remove/<franchise_id>', methods=['GET'])
+@admin_routes.route('/franchises/remove/<int:franchise_id>', methods=['GET'])
 @login_required
-def franchises_remove(franchise_id):
+def franchises_remove(franchise_id: int):
     args = request.args
     return redirect('/franchises?token=' + args['token'])

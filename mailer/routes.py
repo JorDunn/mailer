@@ -94,7 +94,7 @@ def queue_add_do():
 
 @app_routes.route('/queue/remove/<int:queue_id>', methods=['GET'])
 @login_required
-def queue_remove(queue_id):
+def queue_remove(queue_id: int):
     args = request.args
     if QueueManager.remove_queue(queue_id):
         return redirect('/queue?token=' + args['token'])
@@ -112,13 +112,13 @@ def customers():
 
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
 @login_required
-def customers_remove(customer_id):
+def customers_remove(customer_id: int):
     pass
 
 
 @app_routes.route('/customers/update/<int:customer_id>', methods=['GET'])
 @login_required
-def customers_update(customer_id):
+def customers_update(customer_id: int):
     pass
 
 
