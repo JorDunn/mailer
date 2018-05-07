@@ -41,8 +41,45 @@ def users():
     return render_template('users.j2', title="Users", current_link="users", token=args['token'], admin_view=True)
 
 
+@admin_routes.route('/users/add', methods=['GET'])
+@login_required
+def users_add():
+    args = request.args
+    return render_template('users_add.j2', title="Add User", current_link="users", token=args['token'], admin_view=True)
+
+
+@admin_routes.route('/users/add/do', methods=['POST'])
+@login_required
+def users_add_do():
+    pass
+
+
+@admin_routes.route('/users/remove/<int:user_id>', methods=['GET'])
+@login_required
+def users_remove(user_id):
+    pass
+
+
 @admin_routes.route('/franchises', methods=['GET'])
 @login_required
 def franchises():
     args = request.args
     return render_template('franchises.j2', title="Franchises", current_link="franchises", token=args['token'], admin_view=True)
+
+
+@admin_routes.route('/franchises/add', methods=['GET'])
+@login_required
+def franchises_add():
+    pass
+
+
+@admin_routes.route('/franchises/add/do', methods=['POST'])
+@login_required
+def franchises_add_do():
+    pass
+
+
+@admin_routes.route('/franchises/remove/<franchise_id>', methods=['GET'])
+@login_required
+def franchises_remove(franchise_id):
+    pass
