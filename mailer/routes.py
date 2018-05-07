@@ -41,9 +41,9 @@ def login():
 
 @app_routes.route('/login/do', methods=['POST'])
 def login_do():
-    data = request.form
-    if data['username'] and data['password']:
-        res = UserManager.validate(data['username'], data['password'])
+    form = request.form
+    if form['username'] and form['password']:
+        res = UserManager.validate(form['username'], form['password'])
         if res is not False:
             return redirect('/?token='+str(res))
         else:
@@ -79,9 +79,9 @@ def queue_add():
 @login_required
 def queue_add_do():
     args = request.args
-    data = request.form
-    if CustomerManager.add_customer(data['first_name'], data['last_name'], data['email'], data['phone']):
-        customer = CustomerManager.get_customer(data['email'])
+    form = request.form
+    if CustomerManager.add_customer(form['first_name'], form['last_name'], form['email'], form['phone']):
+        customer = CustomerManager.get_customer(form['email'])
         if QueueManager.add_queue(customer.customer_id):
             return redirect('/queue?token=' + args['token'])
         else:
@@ -113,13 +113,16 @@ def customers():
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
 @login_required
 def customers_remove(customer_id: int):
-    pass
+    args = request.args
+    return redirect('/customers?token=' + args['token'])
 
 
 @app_routes.route('/customers/update/<int:customer_id>', methods=['GET'])
 @login_required
 def customers_update(customer_id: int):
-    pass
+    args = request.args
+    form = request.form
+    return redirect('/customers?token=' + args['token'])
 
 
 @app_routes.route('/templates', methods=['GET'])
@@ -140,5 +143,5 @@ def templates_add():
 @login_required
 def templates_add_do():
     args = request.args
-    data = request.form
+    form = request.form
     return redirect('/templates?token=' + args['token'])
