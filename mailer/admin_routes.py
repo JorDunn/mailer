@@ -51,13 +51,16 @@ def users_add():
 @admin_routes.route('/users/add/do', methods=['POST'])
 @login_required
 def users_add_do():
-    pass
+    args = request.args
+    form = request.form
+    return redirect('/users?token=' + args['token'])
 
 
 @admin_routes.route('/users/remove/<int:user_id>', methods=['GET'])
 @login_required
 def users_remove(user_id):
-    pass
+    args = request.args
+    return redirect('/users?token=' + args['token'])
 
 
 @admin_routes.route('/franchises', methods=['GET'])
@@ -70,16 +73,20 @@ def franchises():
 @admin_routes.route('/franchises/add', methods=['GET'])
 @login_required
 def franchises_add():
-    pass
+    args = request.args
+    return render_template('franchises_add.j2', title="Add Franchise", current_link="franchises", token=args['token'], admin_view=True)
 
 
 @admin_routes.route('/franchises/add/do', methods=['POST'])
 @login_required
 def franchises_add_do():
-    pass
+    args = request.args
+    form = request.form
+    return redirect('/franchises?token=' + args['token'])
 
 
 @admin_routes.route('/franchises/remove/<franchise_id>', methods=['GET'])
 @login_required
 def franchises_remove(franchise_id):
-    pass
+    args = request.args
+    return redirect('/franchises?token=' + args['token'])
