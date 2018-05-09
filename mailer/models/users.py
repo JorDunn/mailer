@@ -27,7 +27,7 @@ class UserManager(object):
 
     @staticmethod
     @db_session
-    def add_user(franchise_id, first_name, last_name, username, password, is_admin):
+    def add_user(franchise_id: int, first_name: str, last_name: str, username: str, password: str, is_admin: bool) -> None or bool:
         if Users.exists(username=username) is False:
             try:
                 Users(franchise_id=franchise_id, first_name=first_name,
@@ -40,7 +40,7 @@ class UserManager(object):
 
     @classmethod
     @db_session
-    def remove_user(cls, user_id):
+    def remove_user(cls, user_id: int) -> bool:
         if Users.exists(user_id=user_id):
             user = Users.get(user_id=user_id)
             user.delete()
@@ -50,7 +50,7 @@ class UserManager(object):
 
     @classmethod
     @db_session
-    def update_user(cls, user_id, password):
+    def update_user(cls, user_id: int, password: str) -> bool:
         if Users.exists(user_id=user_id):
             try:
                 user = Users.get(user_id=user_id)
@@ -63,7 +63,7 @@ class UserManager(object):
 
     @classmethod
     @db_session
-    def validate(cls, username, password):
+    def validate(cls, username: str, password: str) -> str or bool:
         if Users.exists(username=username):
             try:
                 user = Users.get(username=username)
@@ -79,7 +79,7 @@ class UserManager(object):
 
     @classmethod
     @db_session
-    def first_run(cls):
+    def first_run(cls) -> bool or None:
         if Users.exists(username='tuser'):
             return False
         else:
