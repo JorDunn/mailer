@@ -18,14 +18,16 @@
             </tr>
         </thead>
         <tbody>
+            {% for tpl in template_list.values() %}
             <tr>
-                <td><a href="#" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                <th scope="row"><a href="/templates/view/1">Device Repair Reviews</a></th>
-                <td>04.01.2018</td>
-                <td>04.30.2018</td>
-                <td>Jordan Dunn</td>
-                <td><a href="#" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="/templates/edit/{{ tpl.template_id }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <th scope="row"><a href="/templates/view/{{ tpl.template_id }}">{{ tpl.name }}</a></th>
+                <td>{{ tpl.added }}</td>
+                <td>{% if tpl.expires == None %}Never{% else %}{{ tpl.expires }}{% endif %}</td>
+                <td>{{ tpl.author }}</td>
+                <td><a href="/templates/remove/{{ tpl.template_id }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
     </div>

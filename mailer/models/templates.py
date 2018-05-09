@@ -3,11 +3,14 @@ import time
 
 from jose import jwt
 from nacl.pwhash import scrypt
-from pony.orm import Database, Optional, PrimaryKey, Required, db_session
+from pony.orm import Database, Optional, PrimaryKey, Required, db_session, select
+from pony.orm.serialization import to_dict, to_json
 
 from mailer.config import Config
 from mailer.models import db
 from mailer.models.sessions import SessionManager
+from pprint import pprint
+import json
 
 
 class Templates(db.Entity):
@@ -64,5 +67,26 @@ class TemplateManager(object):
 
     @classmethod
     @db_session
-    def get_template(cls, template_id: int) -> dict:
-        pass
+    def get_template(cls, template_id: int) -> dict or bool:
+        try:
+            if Templates.exists(template_id=template_id):
+                tpl = Templates.get(template_id=template_id)
+                return tpl
+            else:
+                return False
+        except BaseException as e:
+            print(e)
+            return False
+
+    @classmethod
+    @db_session
+    def get_template_list(cls) -> dict or bool:
+        try:
+            tpl_list = {}
+            res = json.loads(to_json(select(t for t in Templates)))
+            for key, data in res['Templates'].items():
+                tpl_list[key] = data
+            return tpl_list
+        except BaseException as e:
+            print(e)
+            return False

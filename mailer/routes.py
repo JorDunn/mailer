@@ -9,6 +9,7 @@ from mailer.models.customers import CustomerManager
 from mailer.models.queue import QueueManager
 from mailer.models.sessions import SessionManager
 from mailer.models.users import UserManager
+from mailer.models.templates import TemplateManager
 import typing
 
 app_routes = Blueprint(__name__, 'app_routes')
@@ -131,7 +132,8 @@ def customers_update(customer_id: int) -> Response:
 @login_required
 def templates() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    return render_template('templates.j2', title='Templates', token=args['token'], current_link='templates')
+    tpl_list = TemplateManager.get_template_list()
+    return render_template('templates.j2', title='Templates', token=args['token'], current_link='templates', template_list=tpl_list)
 
 
 @app_routes.route('/templates/add', methods=['GET'])

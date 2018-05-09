@@ -17,13 +17,13 @@
                 </tr>
             </thead>
             <tbody>
-                {% for items in queue %}
+                {% for items in queue.values() %}
                     <tr>
-                        <td><a href="customers/edit/{{ queue[items]['customer_id'] }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                        <th scope="row">{{ queue[items]['email'] }}</th>
-                        <td>{{ queue[items]['first_name'] }} {{ queue[items]['last_name'] }}</td>
-                        <td>{{ queue[items]['phone'] }}</td>
-                        <td><a href="/queue/remove/{{ queue[items]['queue_id'] }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                        <td><a href="customers/edit/{{ items.customer_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                        <th scope="row">{{ items.email }}</th>
+                        <td>{{ items.first_name }} {{ items.last_name }}</td>
+                        <td>{{ items.phone }}</td>
+                        <td><a href="/queue/remove/{{ items.queue_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
                     </tr>
                 {% endfor %}
             </tbody>
