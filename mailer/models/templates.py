@@ -25,5 +25,20 @@ class TemplateManager(object):
 
     @classmethod
     @db_session
-    def add_template(cls, name, body):
+    def add_template(cls, name: str, body: str):
+        pass
+
+    @classmethod
+    @db_session
+    def remove_template(cls, template_id: int):
+        pass
+
+    @classmethod
+    @db_session
+    def update_template(cls, template_id: int):
+        pass
+
+    @classmethod
+    @db_session
+    def get_template(cls, template_id: int):
         pass
