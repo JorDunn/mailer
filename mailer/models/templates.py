@@ -18,27 +18,51 @@ class Templates(db.Entity):
     name = Required(str)
     body = Required(str)
     added = Required(datetime.datetime)
-    expires = Required(datetime.datetime)
+    expires = Optional(datetime.datetime)
 
 
 class TemplateManager(object):
 
     @classmethod
     @db_session
-    def add_template(cls, name: str, body: str):
-        pass
+    def add_template(cls, name: str, body: str) -> bool:
+        try:
+            Templates(name=name, body=body, added=datetime.datetime.utcnow())
+            return True
+        except BaseException as e:
+            print(e)
+            return False
 
     @classmethod
     @db_session
-    def remove_template(cls, template_id: int):
-        pass
+    def remove_template(cls, template_id: int) -> bool:
+        try:
+            if Templates.exists(template_id=template_id):
+                tpl = Templates.get(template_id=template_id)
+                tpl.delete()
+                return True
+            else:
+                return False
+        except BaseException as e:
+            print(e)
+            return False
 
     @classmethod
     @db_session
-    def update_template(cls, template_id: int):
-        pass
+    def update_template(cls, template_id: int, name: str, body: str) -> bool:
+        try:
+            if Templates.exists(template_id=template_id):
+                tpl = Templates.get(template_id=template_id)
+                tpl.name = name
+                tpl.body = body
+                return True
+            else:
+                return False
+        except BaseException as e:
+            print(e)
+            return False
 
     @classmethod
     @db_session
-    def get_template(cls, template_id: int):
+    def get_template(cls, template_id: int) -> dict:
         pass
