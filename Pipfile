@@ -16,6 +16,8 @@ flask-pony = "*"
 pynacl = "*"
 python-jose = "*"
 pymysqldb = "*"
+flask-login = "*"
+flask-principal = "*"
 
 [requires]
 python_version = "3.6"

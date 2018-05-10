@@ -2,5 +2,6 @@
 A utility for sending device repair customers review emails
 
 # TODO
-    - Decorator for adding token to end of url?
-    - Generators for some of the for loops
+    - flask-login integration
+    - flask-principal integration
+    - Generators for some of the for loops?

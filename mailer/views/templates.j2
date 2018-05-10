@@ -25,7 +25,7 @@
                 <td>{{ tpl.added }}</td>
                 <td>{% if tpl.expires == None %}Never{% else %}{{ tpl.expires }}{% endif %}</td>
                 <td>{{ tpl.author }}</td>
-                <td><a href="/templates/remove/{{ tpl.template_id }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="/templates/remove/{{ tpl.template_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
             {% endfor %}
         </tbody>

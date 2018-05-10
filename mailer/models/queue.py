@@ -67,5 +67,5 @@ class QueueManager(object):
                                       'first_name': data2['first_name'], 'last_name': data2['last_name'], 'email': data2['email'], 'phone': data2['phone']}
             return json_data
         except Exception as e:
-            print(e)
+            print("Failure: {}".format(e))
             return json_data

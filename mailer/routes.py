@@ -22,10 +22,13 @@ def login_required(f):
         try:
             args: typing.Dict(str, typing.Any) = request.args
             if SessionManager.validate(args['token']):
+                print("Valid token")
                 return f(**kwargs)
             else:
+                print("Invalid token")
                 return redirect('/login')
         except BadRequestKeyError:
+            print("No token detected")
             return redirect('/login')
     return decorator
 
@@ -150,5 +153,21 @@ def templates_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
     TemplateManager.add_template(
-        name=form['name'], body=form['body'], expires=form['expires'])
+        name=form['title'], body=form['template'], expires=form['expires'])
     return redirect('/templates?token=' + args['token'])
+
+
+@app_routes.route('/templates/remove/<int:template_id>', methods=['GET'])
+@login_required
+def templates_remove(template_id: int) -> Response:
+    args: typing.Dict(str, typing.Any) = request.args
+    TemplateManager.remove_template(template_id=template_id)
+    return redirect('/templates?token=' + args['token'])
+
+
+@app_routes.route('/templates/edit/<int:template_id>', methods=['GET'])
+@login_required
+def templates_edit(template_id: int) -> Response:
+    args: typing.Dict(str, typing.Any) = request.args
+    tpl = TemplateManager.get_template(template_id=template_id)
+    return render_template('templates_edit.j2', title='Edit Template', token=args['token'], current_link='templates', template=tpl)

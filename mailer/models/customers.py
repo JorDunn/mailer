@@ -39,7 +39,7 @@ class CustomerManager(object):
                 print("Success")
                 return True, customer.customer_id
             except Exception as e:
-                print(e)
+                print("Failure: {}".format(e))
                 return False
 
     @classmethod
