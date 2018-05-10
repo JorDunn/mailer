@@ -11,6 +11,7 @@ from mailer.models.sessions import SessionManager
 from mailer.models.users import UserManager
 from mailer.models.templates import TemplateManager
 import typing
+from pprint import pprint
 
 app_routes = Blueprint(__name__, 'app_routes')
 
@@ -148,4 +149,6 @@ def templates_add() -> Response:
 def templates_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
+    TemplateManager.add_template(
+        name=form['name'], body=form['body'], expires=form['expires'])
     return redirect('/templates?token=' + args['token'])

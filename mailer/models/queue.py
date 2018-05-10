@@ -28,11 +28,13 @@ class QueueManager(object):
     @classmethod
     @db_session
     def add_queue(cls, customer_id):
+        print("Trying to add customer to queue...")
         try:
             Queue(customer_id=customer_id)
+            print("Success")
             return True
         except Exception as e:
-            print(e)
+            print("Failure: {}".format(e))
             return False
 
     @classmethod
@@ -63,7 +65,7 @@ class QueueManager(object):
                 for key2, data2 in customer['Customers'].items():
                     json_data[key] = {'queue_id': data['queue_id'], 'customer_id': data2['customer_id'],
                                       'first_name': data2['first_name'], 'last_name': data2['last_name'], 'email': data2['email'], 'phone': data2['phone']}
-                    return json_data
+            return json_data
         except Exception as e:
             print(e)
             return json_data
