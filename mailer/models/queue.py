@@ -54,18 +54,18 @@ class QueueManager(object):
     @classmethod
     @db_session
     def get_queue(cls):
-        """Returns a dict with the queue items and customer info for each item. This could probably
-        be a JOIN statement in the future"""
-        json_data = {}
         try:
-            queue_json = json.loads(to_json(select(q for q in Queue)))
-            for key, data in queue_json['Queue'].items():
-                customer = json.loads(
-                    to_json(select(c for c in Customers if c.customer_id == data['customer_id'])))
-                for key2, data2 in customer['Customers'].items():
-                    json_data[key] = {'queue_id': data['queue_id'], 'customer_id': data2['customer_id'],
-                                      'first_name': data2['first_name'], 'last_name': data2['last_name'], 'email': data2['email'], 'phone': data2['phone']}
-            return json_data
-        except Exception as e:
+            data = {}
+            for q in Queue.select(lambda q: q.queue_id > 0):
+                for c in Customers.select(lambda c: c.customer_id == q.customer_id):
+                    data[q.queue_id] = {'queue_id': q.queue_id,
+                                        'customer_id': c.customer_id,
+                                        'first_name': c.first_name,
+                                        'last_name': c.last_name,
+                                        'email': c.email,
+                                        'phone': c.phone
+                                        }
+            return data
+        except BaseException as e:
             print("Failure: {}".format(e))
-            return json_data
+            return {}
