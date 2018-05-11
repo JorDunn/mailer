@@ -68,11 +68,11 @@ class UserManager(object):
             try:
                 user = Users.get(username=username)
                 if scrypt.verify(user.password, password.encode()):
-                    token = SessionManager.add_session(username, user.is_admin)
-                    return token
+                    return SessionManager.add_session(username, user.is_admin)
                 else:
                     return False
-            except:
+            except Exception as e:
+                print(e)
                 return False
         else:
             return False
@@ -84,3 +84,8 @@ class UserManager(object):
             return False
         else:
             UserManager.add_user(0, 'Test', 'User', 'tuser', 'testing', True)
+
+    @classmethod
+    @db_session
+    def get_users(cls) -> dict:
+        pass

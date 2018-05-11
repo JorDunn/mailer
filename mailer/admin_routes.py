@@ -5,8 +5,6 @@ from flask import Blueprint, flash, redirect, render_template, request
 from flask import Response
 from werkzeug.exceptions import BadRequestKeyError
 
-from mailer.models.customers import CustomerManager
-from mailer.models.queue import QueueManager
 from mailer.models.sessions import SessionManager
 from mailer.models.users import UserManager
 
@@ -41,7 +39,8 @@ def index() -> Response:
 @login_required
 def users() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    return render_template('users.j2', title="Users", current_link="users", token=args['token'], admin_view=True)
+    users = UserManager.get_users()
+    return render_template('users.j2', title="Users", current_link="users", token=args['token'], admin_view=True, users=users)
 
 
 @admin_routes.route('/users/add', methods=['GET'])
@@ -56,6 +55,7 @@ def users_add() -> Response:
 def users_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
+    UserManager.add_user(franchise_id=form['franchise_id'], first_name=form['first_name'], last_name=form['last_name'], username=form['username'], password=form['password'], is_admin=form['is_admin'])
     return redirect('/users?token=' + args['token'])
 
 
