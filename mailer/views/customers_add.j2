@@ -1,0 +1,44 @@
+{% extends "base.j2" %}
+
+{% block content %}
+<br/><br/>
+<div class="col-lg-8 offset-lg-2">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title text-center">Add Customer</h5>
+            <form action="/customers/add/do?token={{ token }}" method="post">
+                <div class="row">
+                <div class="form-group col-lg-6">
+                    <label for="first_name">First Name</label>
+                    <input name="first_name" type="text" class="form-control">
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="last_name">Last Name</label>
+                    <input name="last_name" type="text" class="form-control">
+                </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="email">Email</label>
+                        <input name="email" type="email" class="form-control">
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="phone">Phone Number</label>
+                        <input name="phone" type="tel" class="form-control">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary float-right"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

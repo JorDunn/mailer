@@ -78,7 +78,7 @@ class TemplateManager(object):
 
     @classmethod
     @db_session
-    def get_template_list(cls) -> dict or bool:
+    def get_template_list(cls) -> dict:
         try:
             return Templates.select(lambda t: t.template_id > 0)[:]
         except Exception as e:

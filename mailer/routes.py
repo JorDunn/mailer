@@ -87,7 +87,7 @@ def queue_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
     if CustomerManager.add_customer(form['first_name'], form['last_name'], form['email'], form['phone']):
-        customer = CustomerManager.get_customer(form['email'])
+        customer = CustomerManager.get_customer_by_email(form['email'])
         if QueueManager.add_queue(customer.customer_id):
             return redirect('/queue?token=' + args['token'])
         else:
@@ -113,7 +113,15 @@ def queue_remove(queue_id: int) -> Response:
 @login_required
 def customers() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    return render_template('customers.j2', title='Customers', token=args['token'], current_link='customers')
+    customers = CustomerManager.get_customers()
+    return render_template('customers.j2', title='Customers', token=args['token'], current_link='customers', customers=customers)
+
+
+@app_routes.route('/customers/add', methods=['GET'])
+@login_required
+def customers_add() -> Response:
+    args: typing.Dict(str, typing.Any) = request.args
+    return render_template('customers_add.j2', title='Add Customer', token=args['token'], current_link='customers')
 
 
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
@@ -123,11 +131,20 @@ def customers_remove(customer_id: int) -> Response:
     return redirect('/customers?token=' + args['token'])
 
 
-@app_routes.route('/customers/update/<int:customer_id>', methods=['GET'])
+@app_routes.route('/customers/edit/<int:customer_id>', methods=['GET'])
 @login_required
-def customers_update(customer_id: int) -> Response:
+def customers_edit(customer_id: int) -> Response:
+    args: typing.Dict(str, typing.Any) = request.args
+    customer = CustomerManager.get_customer_by_id(customer_id)
+    return render_template('customers_edit.j2', title='Add Customer', token=args['token'], current_link='customers', customer=customer)
+
+
+@app_routes.route('/customers/edit/do', methods=['POST'])
+@login_required
+def customers_edit_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
+    CustomerManager.update_customer(customer_id=form['customer_id'], first_name=form['first_name'], last_name=form['last_name'], email=form['email'], phone=form['phone'])
     return redirect('/customers?token=' + args['token'])
 
 
