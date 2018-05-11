@@ -2,8 +2,7 @@ import datetime
 import time
 
 from jose import jwt
-from nacl.pwhash import scrypt
-from pony.orm import Database, Optional, PrimaryKey, Required, db_session
+from pony.orm import PrimaryKey, Required, db_session
 
 from mailer.config import Config
 from mailer.models import db
@@ -30,7 +29,8 @@ class SessionManager(object):
             token = jwt.encode(payload, Config.SECRET_KEY, algorithm='HS256')
             Sessions(token=token)
             return token
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     @classmethod
@@ -41,7 +41,8 @@ class SessionManager(object):
                 session = Sessions.get(token=token)
                 session.delete()
                 return True
-            except:
+            except Exception as e:
+                print(e)
                 return False
         else:
             return False
@@ -57,6 +58,7 @@ class SessionManager(object):
                 return False
             else:
                 return True
-        except:
+        except Exception as e:
+            print(e)
             cls.remove_session(token)
             return False

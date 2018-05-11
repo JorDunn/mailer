@@ -1,14 +1,13 @@
+import typing
 from functools import wraps
 from pprint import pprint
 
-from flask import Blueprint, flash, redirect, render_template, request
-from flask import Response
+from flask import (Blueprint, Response, flash, redirect, render_template,
+                   request)
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.sessions import SessionManager
 from mailer.models.users import UserManager
-
-import typing
 
 admin_routes = Blueprint(__name__, 'admin_routes',
                          url_prefix='/admin')

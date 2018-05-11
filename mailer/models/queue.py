@@ -1,18 +1,7 @@
-import datetime
-import json
-import time
-from pprint import pprint
+from pony.orm import (PrimaryKey, Required, db_session)
 
-from jose import jwt
-from nacl.pwhash import scrypt
-from pony.orm import (Database, Optional, PrimaryKey, Required, db_session,
-                      select)
-from pony.orm.serialization import to_dict, to_json
-
-from mailer.config import Config
 from mailer.models import db
 from mailer.models.customers import Customers
-from mailer.models.sessions import SessionManager
 
 
 class Queue(db.Entity):

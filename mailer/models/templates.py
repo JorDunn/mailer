@@ -1,16 +1,8 @@
 import datetime
-import time
 
-from jose import jwt
-from nacl.pwhash import scrypt
-from pony.orm import Database, Optional, PrimaryKey, Required, db_session, select
-from pony.orm.serialization import to_dict, to_json
+from pony.orm import Optional, PrimaryKey, Required, db_session
 
-from mailer.config import Config
 from mailer.models import db
-from mailer.models.sessions import SessionManager
-from pprint import pprint
-import json
 
 
 class Templates(db.Entity):

@@ -1,11 +1,5 @@
-import datetime
-import time
+from pony.orm import PrimaryKey, Required, db_session
 
-from jose import jwt
-from nacl.pwhash import scrypt
-from pony.orm import Database, Optional, PrimaryKey, Required, db_session
-
-from mailer.config import Config
 from mailer.models import db
 
 
@@ -28,7 +22,8 @@ class FranchiseManager(object):
             try:
                 Franchisees(name=name)
                 return True
-            except:
+            except Exception as e:
+                print(e)
                 return False
 
     @classmethod
@@ -39,7 +34,8 @@ class FranchiseManager(object):
                 franchise = Franchisees.get(franchise_id=franchise_id)
                 franchise.delete()
                 return True
-            except:
+            except Exception as e:
+                print(e)
                 return False
         else:
             return False
@@ -52,7 +48,8 @@ class FranchiseManager(object):
                 franchise = Franchisees.get(franchise_id=franchise_id)
                 franchise.name = name
                 return True
-            except:
+            except Exception as e:
+                print(e)
                 return False
         else:
             return False

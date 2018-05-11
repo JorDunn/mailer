@@ -1,14 +1,6 @@
-import datetime
-import time
-from pprint import pprint
+from pony.orm import PrimaryKey, Required, db_session
 
-from jose import jwt
-from nacl.pwhash import scrypt
-from pony.orm import Database, Optional, PrimaryKey, Required, db_session
-
-from mailer.config import Config
 from mailer.models import db
-from mailer.models.sessions import SessionManager
 
 
 class Customers(db.Entity):
@@ -32,11 +24,8 @@ class CustomerManager(object):
             return False
         else:
             try:
-                print("Trying to add customer... ")
                 customer = Customers(first_name=first_name,
                                      last_name=last_name, email=email, phone=phone)
-                pprint(customer)
-                print("Success")
                 return True, customer.customer_id
             except Exception as e:
                 print("Failure: {}".format(e))
