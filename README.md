@@ -1,5 +1,5 @@
 # mailer
-A utility for sending device repair customers review emails
+A utility for sending emails to customers.
 
 # TODO
     - flask-login integration
