@@ -35,7 +35,7 @@ class TemplateManager(object):
             else:
                 Templates(name=name, body=body, added=datetime.datetime.utcnow())
             return True
-        except BaseException as e:
+        except Exception as e:
             print("Failure: {}".format(e))
             return False
 
@@ -49,7 +49,7 @@ class TemplateManager(object):
                 return True
             else:
                 return False
-        except BaseException as e:
+        except Exception as e:
             print("Failure: {}".format(e))
             return False
 
@@ -68,7 +68,7 @@ class TemplateManager(object):
                 return True
             else:
                 return False
-        except BaseException as e:
+        except Exception as e:
             print("Failure: {}".format(e))
             return False
 
@@ -80,7 +80,7 @@ class TemplateManager(object):
                 return Templates[template_id]
             else:
                 return False
-        except BaseException as e:
+        except Exception as e:
             print("Failure: {}".format(e))
             return False
 
@@ -89,6 +89,6 @@ class TemplateManager(object):
     def get_template_list(cls) -> dict or bool:
         try:
             return Templates.select(lambda t: t.template_id > 0)[:]
-        except BaseException as e:
+        except Exception as e:
             print("Failure: {}".format(e))
             return {}

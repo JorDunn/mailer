@@ -47,8 +47,7 @@ class CustomerManager(object):
     def get_customer(cls, email):
         if Customers.exists(email=email):
             try:
-                customer = Customers.get(email=email)
-                return customer
+                return Customers[email]
             except Exception as e:
                 print(e)
                 return False
@@ -58,7 +57,7 @@ class CustomerManager(object):
     def remove_customer(cls, customer_id):
         if Customers.exists(customer_id=customer_id):
             try:
-                customer = Customers(customer_id=customer_id)
+                customer = Customers[customer_id]
                 customer.delete()
                 return True
             except Exception as e:
@@ -72,7 +71,7 @@ class CustomerManager(object):
     def update_customer(cls, customer_id, first_name, last_name, email):
         if Customers.exists(customer_id=customer_id):
             try:
-                customer = Customers(customer_id=customer_id)
+                customer = Customers[customer_id]
                 customer.first_name = first_name
                 customer.last_name = last_name
                 customer.email = email
