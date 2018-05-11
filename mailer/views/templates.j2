@@ -18,9 +18,9 @@
             </tr>
         </thead>
         <tbody>
-            {% for tpl in template_list.values() %}
+            {% for tpl in template_list %}
             <tr>
-                <td><a href="/templates/edit/{{ tpl.template_id }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <td><a href="/templates/edit/{{ tpl.template_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row"><a href="/templates/view/{{ tpl.template_id }}">{{ tpl.name }}</a></th>
                 <td>{{ tpl.added }}</td>
                 <td>{% if tpl.expires == None %}Never{% else %}{{ tpl.expires }}{% endif %}</td>

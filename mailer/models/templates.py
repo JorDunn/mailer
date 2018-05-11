@@ -29,41 +29,47 @@ class TemplateManager(object):
     @classmethod
     @db_session
     def add_template(cls, name: str, body: str, expires: str) -> bool:
-        if expires != '':
-            Templates(name=name, body=body,
-                      added=datetime.datetime.utcnow(), expires=expires)
-        else:
-            Templates(name=name, body=body,
-                      added=datetime.datetime.utcnow())
-        return True
+        try:
+            if expires != '':
+                Templates(name=name, body=body, added=datetime.datetime.utcnow(), expires=expires)
+            else:
+                Templates(name=name, body=body, added=datetime.datetime.utcnow())
+            return True
+        except BaseException as e:
+            print("Failure: {}".format(e))
+            return False
 
     @classmethod
     @db_session
     def remove_template(cls, template_id: int) -> bool:
         try:
             if Templates.exists(template_id=template_id):
-                tpl = Templates.get(template_id=template_id)
+                tpl = Templates[template_id]
                 tpl.delete()
                 return True
             else:
                 return False
         except BaseException as e:
-            print(e)
+            print("Failure: {}".format(e))
             return False
 
     @classmethod
     @db_session
-    def update_template(cls, template_id: int, name: str, body: str) -> bool:
+    def update_template(cls, template_id: int, name: str, body: str, expires: str) -> bool:
         try:
             if Templates.exists(template_id=template_id):
-                tpl = Templates.get(template_id=template_id)
+                tpl = Templates[template_id]
                 tpl.name = name
                 tpl.body = body
+                if expires != "":
+                    tpl.expires = expires
+                else:
+                    tpl.expires = None
                 return True
             else:
                 return False
         except BaseException as e:
-            print(e)
+            print("Failure: {}".format(e))
             return False
 
     @classmethod
@@ -71,25 +77,18 @@ class TemplateManager(object):
     def get_template(cls, template_id: int) -> dict or bool:
         try:
             if Templates.exists(template_id=template_id):
-                tpl = Templates.get(template_id=template_id)
-                return tpl
+                return Templates[template_id]
             else:
                 return False
         except BaseException as e:
-            print(e)
+            print("Failure: {}".format(e))
             return False
 
     @classmethod
     @db_session
     def get_template_list(cls) -> dict or bool:
-        tpl_list = {}
         try:
-            print("Trying to get template list...")
-            res = json.loads(to_json(select(t for t in Templates)))
-            for key, data in res['Templates'].items():
-                tpl_list[key] = data
-            print("Success")
-            return tpl_list
+            return Templates.select(lambda t: t.template_id > 0)[:]
         except BaseException as e:
             print("Failure: {}".format(e))
-            return tpl_list
+            return {}

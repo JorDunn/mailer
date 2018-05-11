@@ -18,6 +18,7 @@ python-jose = "*"
 pymysqldb = "*"
 flask-login = "*"
 flask-principal = "*"
+"flake8" = "*"
 
 [requires]
 python_version = "3.6"

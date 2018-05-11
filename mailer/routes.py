@@ -171,3 +171,13 @@ def templates_edit(template_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     tpl = TemplateManager.get_template(template_id=template_id)
     return render_template('templates_edit.j2', title='Edit Template', token=args['token'], current_link='templates', template=tpl)
+
+
+@app_routes.route('/templates/edit/do', methods=['POST'])
+@login_required
+def templates_edit_do() -> Response:
+    args: typing.Dict(str, typing.Any) = request.args
+    form: typing.Dict(str, typing.Any) = request.form
+    pprint(form)
+    TemplateManager.update_template(template_id=form['template_id'], name=form['title'], body=form['template'], expires=form['expires'])
+    return redirect('/templates?token=' + args['token'])
