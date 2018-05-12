@@ -1,19 +1,8 @@
 import datetime
 
-from pony.orm import Optional, PrimaryKey, Required, db_session
+from pony.orm import db_session
 
-from mailer.models import db
-
-
-class Templates(db.Entity):
-
-    _table_ = 'templates'
-
-    template_id = PrimaryKey(int, auto=True)
-    name = Required(str)
-    body = Required(str)
-    added = Required(datetime.datetime)
-    expires = Optional(datetime.datetime)
+from mailer.models import Templates
 
 
 class TemplateManager(object):

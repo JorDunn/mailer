@@ -1,14 +1,8 @@
-from pony.orm import PrimaryKey, Required, db_session
+from pony.orm import db_session
 
-from mailer.models import db
+from mailer.models import Franchises
 
-
-class Franchises(db.Entity):
-
-    _table_ = 'franchises'
-
-    franchise_id = PrimaryKey(int, auto=True)
-    name = Required(str, unique=True)
+from mailer.models.users import UserManager
 
 
 class FranchiseManager(object):
@@ -31,6 +25,7 @@ class FranchiseManager(object):
     def remove_franchise(cls, franchise_id):
         if Franchises.exists(franchise_id=franchise_id):
             try:
+                UserManager.update_franchises(franchise_id=franchise_id)
                 franchise = Franchises[franchise_id]
                 franchise.delete()
                 return True

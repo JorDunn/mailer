@@ -1,25 +1,13 @@
 from nacl.pwhash import scrypt
-from pony.orm import PrimaryKey, Required, db_session
+from pony.orm import db_session
 
-from mailer.models import db
+from mailer.models import Franchises, Users
 from mailer.models.sessions import SessionManager
 
 from typing import Union
 
 from jose import jwt
 from mailer.config import Config
-
-class Users(db.Entity):
-
-    _table_ = 'users'
-
-    user_id = PrimaryKey(int, auto=True)
-    franchise_id = Required(int)
-    first_name = Required(str)
-    last_name = Required(str)
-    username = Required(str, unique=True)
-    password = Required(bytes)
-    is_admin = Required(bool)
 
 
 class UserManager(object):
@@ -97,7 +85,17 @@ class UserManager(object):
     @db_session
     def get_users(cls) -> dict:
         try:
-            return Users.select(lambda u: u.user_id > 0)[:]
+            data = {}
+            for u in Users.select(lambda u: u.user_id > 0):
+                for f in Franchises.select(lambda f: f.franchise_id == u.franchise_id):
+                    data[u.user_id] = {'user_id': u.user_id,
+                                       'franchise_id': f.franchise_id,
+                                       'franchise_name': f.name,
+                                       'username': u.username,
+                                       'first_name': u.first_name,
+                                       'last_name': u.last_name,
+                                       'is_admin': u.is_admin}
+            return data
         except Exception as e:
             print(e)
             return {}
@@ -119,6 +117,18 @@ class UserManager(object):
                 return True
             else:
                 return False
+        except Exception as e:
+            print(e)
+            return False
+
+    @classmethod
+    @db_session
+    def update_franchises(cls, franchise_id):
+        try:
+            users = Users.select(lambda u: u.franchise_id == franchise_id)
+            for user in users:
+                print(user.username)
+                user.franchise_id = 1
         except Exception as e:
             print(e)
             return False

@@ -136,21 +136,14 @@ def franchises() -> Response:
     return render_template('franchises.j2', title="Franchises", current_link="franchises", token=args['token'], admin_view=True, franchises=franchises)
 
 
-@admin_routes.route('/franchises/add', methods=['GET'])
-@login_required
-@admin_required
-def franchises_add() -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
-    return render_template('franchises_add.j2', title="Add Franchise", current_link="franchises", token=args['token'], admin_view=True)
-
-
 @admin_routes.route('/franchises/add/do', methods=['POST'])
 @login_required
 @admin_required
 def franchises_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    return redirect('/franchises?token=' + args['token'])
+    FranchiseManager.add_franchise(name=form['name'])
+    return redirect('/admin/franchises?token=' + args['token'])
 
 
 @admin_routes.route('/franchises/remove/<int:franchise_id>', methods=['GET'])
@@ -158,4 +151,5 @@ def franchises_add_do() -> Response:
 @admin_required
 def franchises_remove(franchise_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    return redirect('/franchises?token=' + args['token'])
+    FranchiseManager.remove_franchise(franchise_id=franchise_id)
+    return redirect('/admin/franchises?token=' + args['token'])

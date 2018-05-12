@@ -1,15 +1,6 @@
-from pony.orm import (PrimaryKey, Required, db_session)
+from pony.orm import db_session
 
-from mailer.models import db
-from mailer.models.customers import Customers
-
-
-class Queue(db.Entity):
-
-    _table_ = 'queue'
-
-    queue_id = PrimaryKey(int, auto=True)
-    customer_id = Required(int)
+from mailer.models import Customers, Queue
 
 
 class QueueManager(object):

@@ -5,15 +5,7 @@ from jose import jwt
 from pony.orm import PrimaryKey, Required, db_session
 
 from mailer.config import Config
-from mailer.models import db
-
-
-class Sessions(db.Entity):
-
-    _table_ = 'sessions'
-
-    session_id = PrimaryKey(int, auto=True)
-    token = Required(str, unique=True)
+from mailer.models import Sessions
 
 
 class SessionManager(object):

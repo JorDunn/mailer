@@ -1,17 +1,6 @@
-from pony.orm import PrimaryKey, Required, db_session
+from pony.orm import db_session
 
-from mailer.models import db
-
-
-class Customers(db.Entity):
-
-    _table_ = 'customers'
-
-    customer_id = PrimaryKey(int, auto=True)
-    first_name = Required(str)
-    last_name = Required(str)
-    email = Required(str, unique=True)
-    phone = Required(str)
+from mailer.models import Customers
 
 
 class CustomerManager(object):
