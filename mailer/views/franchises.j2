@@ -4,26 +4,31 @@
 <br/><br/>
 <div class="col-lg-10 offset-lg-1">
     <div class="col-lg-12">
-    <a href="/franchises/add?token={{ token }}" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Franchise</a>
+    <div class="row">
+            <div class="col-lg-6">
+                <a href="/franchises/add?token={{ token }}" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Franchise</a>
+            </div>
+            <div class="col-lg-6 text-right">
+                <h2>Franchises</h2>
+            </div>
+        </div>
     <br/><br/>
     <table class="table table-striped text-center">
         <thead class="thead-dark">
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Name</th>
-                <th scope="col">Addon on</th>
-                <th scope="col">Added by</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
+            {% for franchise in franchises %}
             <tr>
-                <td><a href="#" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                <th scope="row"></th>
-                <td></td>
-                <td></td>
-                <td><a href="#" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="/admin/franchises/edit/{{ franchise.franchise_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <th scope="row">{{ franchise.name }}</th>
+                <td><a href="/admin/franchises/remove/{{ franchise.franchise_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
     </div>

@@ -52,8 +52,7 @@ class SessionManager(object):
     def validate(cls, token):
         """Checks to see if a session token is valid still"""
         try:
-            token_decoded = jwt.decode(
-                token, Config.SECRET_KEY, algorithms='HS256', issuer='mailer')
+            token_decoded = jwt.decode(token, Config.SECRET_KEY, algorithms='HS256', issuer='mailer')
             if token_decoded['exp'] <= time.time() or token_decoded['nbf'] >= time.time():
                 return False
             else:
