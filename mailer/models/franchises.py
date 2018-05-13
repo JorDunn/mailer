@@ -1,7 +1,8 @@
 from pony.orm import db_session
 
-from mailer.models import Franchises
+from flask import flash
 
+from mailer.models import Franchises
 from mailer.models.users import UserManager
 
 
@@ -9,15 +10,17 @@ class FranchiseManager(object):
 
     @classmethod
     @db_session
-    def add_franchise(cls, name):
+    def add_franchise(cls, name: str) -> bool:
         if Franchises.exists(name=name):
+            flash("A franchise with that name already exists", 'franchise_error')
             return False
         else:
             try:
                 Franchises(name=name)
                 return True
-            except Exception as e:
-                print(e)
+            except Exception as err:
+                flash("There was an error adding the franchise: {}".format(err), 'franchise_error')
+                print(err)
                 return False
 
     @classmethod

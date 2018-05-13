@@ -1,41 +1,50 @@
+from typing import Any, Dict
+
 from pony.orm import db_session
 
 from mailer.models import Customers, Queue
+
+from flask import flash
 
 
 class QueueManager(object):
 
     @classmethod
     @db_session
-    def add_queue(cls, customer_id):
-        print("Trying to add customer to queue...")
-        try:
-            Queue(customer_id=customer_id)
-            print("Success")
-            return True
-        except Exception as e:
-            print("Failure: {}".format(e))
+    def add_queue(cls, customer_id: int) -> bool:
+        if Queue.exists(customer_id=customer_id):
+            # We don't want to be spamming the customers.
+            # Don't add to queue if they are already there.
+            flash("Customer is already in the queue.", 'queue_error')
             return False
+        else:
+            try:
+                Queue(customer_id=customer_id)
+                return True
+            except Exception as err:
+                flash("Error adding customer to the queue: {}".format(err), 'queue_error')
+                print(err)
+                return False
 
     @classmethod
     @db_session
-    def remove_queue(cls, queue_id):
+    def remove_queue(cls, queue_id: int) -> bool:
         if Queue.exists(queue_id=queue_id):
             try:
                 queue = Queue.get(queue_id=queue_id)
                 queue.delete()
                 return True
-            except Exception as e:
-                print(e)
+            except Exception as err:
+                print(err)
                 return False
         else:
             return False
 
     @classmethod
     @db_session
-    def get_queue(cls):
+    def get_queue(cls) -> dict:
         try:
-            data = {}
+            data: Dict(str, Any) = {}
             for q in Queue.select(lambda q: q.queue_id > 0):
                 for c in Customers.select(lambda c: c.customer_id == q.customer_id):
                     data[q.queue_id] = {'queue_id': q.queue_id,
@@ -46,6 +55,6 @@ class QueueManager(object):
                                         'phone': c.phone
                                         }
             return data
-        except BaseException as e:
-            print("Failure: {}".format(e))
+        except Exception as err:
+            print(err)
             return {}

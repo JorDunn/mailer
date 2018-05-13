@@ -2,8 +2,7 @@ import typing
 from functools import wraps
 from pprint import pprint
 
-from flask import (Blueprint, Response, flash, redirect, render_template,
-                   request)
+from flask import (Blueprint, Response, flash, redirect, render_template, request)
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.customers import CustomerManager
@@ -41,7 +40,6 @@ def index() -> Response:
 
 @app_routes.route('/login', methods=['GET'])
 def login() -> Response:
-    UserManager.first_run()
     return render_template('login.j2', title="Login", current_link="login")
 
 
@@ -88,13 +86,11 @@ def queue_add_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
     if CustomerManager.add_customer(form['first_name'], form['last_name'], form['email'], form['phone']):
         customer = CustomerManager.get_customer_by_email(form['email'])
-        if QueueManager.add_queue(customer.customer_id):
-            return redirect('/queue?token=' + args['token'])
-        else:
-            flash("Error adding customer to queue", "queue_error")
-            return redirect('/queue/add?token=' + args['token'])
     else:
-        flash("Error adding customer", "queue_error")
+        return redirect('/queue/add?token=' + args['token'])
+    if QueueManager.add_queue(customer.customer_id):
+        return redirect('/queue?token=' + args['token'])
+    else:
         return redirect('/queue/add?token=' + args['token'])
 
 
@@ -124,10 +120,22 @@ def customers_add() -> Response:
     return render_template('customers_add.j2', title='Add Customer', token=args['token'], current_link='customers')
 
 
+@app_routes.route('/customers/add/do', methods=['POST'])
+@login_required
+def customers_add_do() -> Response:
+    args: typing.Dict(str, typing.Any) = request.args
+    form: typing.Dict(str, typing.Any) = request.form
+    if CustomerManager.add_customer(first_name=form['first_name'], last_name=form['last_name'], email=form['email'], phone=form['phone']):
+        return redirect('/customers?token=' + args['token'])
+    else:
+        return redirect('/customers/add?token=' + args['token'])
+
+
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
 @login_required
 def customers_remove(customer_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
+    CustomerManager.remove_customer(customer_id=customer_id)
     return redirect('/customers?token=' + args['token'])
 
 
@@ -144,7 +152,8 @@ def customers_edit(customer_id: int) -> Response:
 def customers_edit_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    CustomerManager.update_customer(customer_id=form['customer_id'], first_name=form['first_name'], last_name=form['last_name'], email=form['email'], phone=form['phone'])
+    CustomerManager.update_customer(customer_id=form['customer_id'], first_name=form['first_name'],
+                                    last_name=form['last_name'], email=form['email'], phone=form['phone'])
     return redirect('/customers?token=' + args['token'])
 
 
@@ -168,8 +177,7 @@ def templates_add() -> Response:
 def templates_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    TemplateManager.add_template(
-        name=form['title'], body=form['template'], expires=form['expires'])
+    TemplateManager.add_template(name=form['title'], body=form['template'], expires=form['expires'])
     return redirect('/templates?token=' + args['token'])
 
 
@@ -195,5 +203,6 @@ def templates_edit_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
     pprint(form)
-    TemplateManager.update_template(template_id=form['template_id'], name=form['title'], body=form['template'], expires=form['expires'])
+    TemplateManager.update_template(template_id=form['template_id'],
+                                    name=form['title'], body=form['template'], expires=form['expires'])
     return redirect('/templates?token=' + args['token'])

@@ -1,5 +1,7 @@
-from pony.orm import Database, Required, Optional, PrimaryKey
 from datetime import datetime
+
+from pony.orm import Database, Required, Optional, PrimaryKey
+
 
 db = Database()
 
@@ -62,3 +64,9 @@ class Templates(db.Entity):
     added = Required(datetime)
     expires = Optional(datetime)
 
+
+class Installer(db.Entity):
+
+    _table_ = 'installer'
+
+    installed = Required(bool)
