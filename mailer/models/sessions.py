@@ -2,7 +2,7 @@ import datetime
 import time
 
 from jose import jwt
-from pony.orm import PrimaryKey, Required, db_session
+from pony.orm import db_session
 
 from mailer.config import Config
 from mailer.models import Sessions
