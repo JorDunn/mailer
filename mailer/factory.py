@@ -19,7 +19,8 @@ def create_app():
     app.register_blueprint(admin_routes)
 
     try:
-        db.bind(provider='mysql', user='root', password='flaber', db='mailer')
+        db.bind(provider=Config.PONY['provider'], user=Config.PONY['user'],
+                password=Config.PONY['password'], db=Config.PONY['dbname'])
         db.generate_mapping(create_tables=True)
     except TypeError:
         print("Already bound to database")
