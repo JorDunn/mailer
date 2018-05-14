@@ -21,8 +21,8 @@ class SessionManager(object):
             token = jwt.encode(payload, Config.SECRET_KEY, algorithm='HS256')
             Sessions(token=token)
             return token
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
             return False
 
     @classmethod
@@ -33,8 +33,8 @@ class SessionManager(object):
                 session = Sessions.get(token=token)
                 session.delete()
                 return True
-            except Exception as e:
-                print(e)
+            except Exception as err:
+                print(err)
                 return False
         else:
             return False
@@ -49,7 +49,7 @@ class SessionManager(object):
                 return False
             else:
                 return True
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
             cls.remove_session(token)
             return False

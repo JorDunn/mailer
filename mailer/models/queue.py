@@ -1,10 +1,9 @@
 from typing import Any, Dict
 
+from flask import flash
 from pony.orm import db_session
 
 from mailer.models import Customers, Queue
-
-from flask import flash
 
 
 class QueueManager(object):
@@ -31,7 +30,7 @@ class QueueManager(object):
     def remove_queue(cls, queue_id: int) -> bool:
         if Queue.exists(queue_id=queue_id):
             try:
-                queue = Queue.get(queue_id=queue_id)
+                queue = Queue[queue_id]
                 queue.delete()
                 return True
             except Exception as err:

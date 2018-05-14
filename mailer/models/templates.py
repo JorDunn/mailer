@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+from typing import Union
 
 from pony.orm import db_session
 
@@ -12,12 +13,12 @@ class TemplateManager(object):
     def add_template(cls, name: str, body: str, expires: str) -> bool:
         try:
             if expires != '':
-                Templates(name=name, body=body, added=datetime.datetime.utcnow(), expires=expires)
+                Templates(name=name, body=body, added=datetime.utcnow(), expires=expires)
             else:
-                Templates(name=name, body=body, added=datetime.datetime.utcnow())
+                Templates(name=name, body=body, added=datetime.utcnow())
             return True
-        except Exception as e:
-            print("Failure: {}".format(e))
+        except Exception as err:
+            print(err)
             return False
 
     @classmethod
@@ -30,8 +31,8 @@ class TemplateManager(object):
                 return True
             else:
                 return False
-        except Exception as e:
-            print("Failure: {}".format(e))
+        except Exception as err:
+            print(err)
             return False
 
     @classmethod
@@ -49,20 +50,20 @@ class TemplateManager(object):
                 return True
             else:
                 return False
-        except Exception as e:
-            print("Failure: {}".format(e))
+        except Exception as err:
+            print(err)
             return False
 
     @classmethod
     @db_session
-    def get_template(cls, template_id: int) -> dict or bool:
+    def get_template(cls, template_id: int) -> Union[dict, bool]:
         try:
             if Templates.exists(template_id=template_id):
                 return Templates[template_id]
             else:
                 return False
-        except Exception as e:
-            print("Failure: {}".format(e))
+        except Exception as err:
+            print(err)
             return False
 
     @classmethod
@@ -70,6 +71,6 @@ class TemplateManager(object):
     def get_template_list(cls) -> dict:
         try:
             return Templates.select(lambda t: t.template_id > 0)[:]
-        except Exception as e:
-            print("Failure: {}".format(e))
+        except Exception as err:
+            print(err)
             return {}

@@ -1,6 +1,5 @@
 import typing
 from functools import wraps
-from pprint import pprint
 
 from flask import (Blueprint, Response, flash, redirect, render_template,
                    request)
@@ -77,8 +76,8 @@ def users_add_do() -> Response:
         flash("The passwords entered do not match")
         return redirect('/admin/users/add?token=' + args['token'])
     else:
-        UserManager.add_user(franchise_id=form['franchises'], first_name=form['first_name'], last_name=form['last_name'],
-                             username=form['username'], password=form['password'], is_admin=request.form.get('is_admin', False))
+        UserManager.add_user(form['franchises'], form['first_name'], form['last_name'],
+                             form['username'], form['password'], request.form.get('is_admin', False))
         return redirect('/admin/users?token=' + args['token'])
 
 
@@ -96,13 +95,12 @@ def users_edit(user_id: int) -> Response:
 def users_edit_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    print(request.form.get('is_admin', False))
     if request.form.get('password', '') != request.form.get('password_verification', ''):
         flash("The passwords entered do not match")
         return redirect('/admin/users/edit/' + form['user_id'] + '?token=' + args['token'])
     else:
-        UserManager.update_user(user_id=form['user_id'], franchise_id=form['franchises'], first_name=form['first_name'],
-                                last_name=form['last_name'], password=form['password'], is_admin=request.form.get('is_admin', False))
+        UserManager.update_user(form['user_id'], form['franchises'], form['first_name'],
+                                form['last_name'], form['password'], request.form.get('is_admin', False))
         return redirect('/admin/users?token=' + args['token'])
 
 
@@ -120,8 +118,7 @@ def users_remove(user_id: int) -> Response:
 @admin_required
 def franchises() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    franchises = FranchiseManager.get_franchises()
-    return render_template('franchises.j2', title="Franchises", current_link="franchises", token=args['token'], admin_view=True, franchises=franchises)
+    return render_template('franchises.j2', title="Franchises", current_link="franchises", token=args['token'], admin_view=True, franchises=FranchiseManager.get_franchises())
 
 
 @admin_routes.route('/franchises/add/do', methods=['POST'])
@@ -130,7 +127,7 @@ def franchises() -> Response:
 def franchises_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    FranchiseManager.add_franchise(name=form['name'])
+    FranchiseManager.add_franchise(form['name'])
     return redirect('/admin/franchises?token=' + args['token'])
 
 
@@ -139,5 +136,5 @@ def franchises_add_do() -> Response:
 @admin_required
 def franchises_remove(franchise_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    FranchiseManager.remove_franchise(franchise_id=franchise_id)
+    FranchiseManager.remove_franchise(franchise_id)
     return redirect('/admin/franchises?token=' + args['token'])
