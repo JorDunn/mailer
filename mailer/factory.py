@@ -1,12 +1,10 @@
+from getpass import getpass
+
 from flask import Flask
-
-from mailer.config import Config
-
 from pony.orm import db_session
 
+from mailer.config import Config
 from mailer.models import db
-
-from getpass import getpass
 
 
 def create_app():
@@ -38,6 +36,11 @@ def installer():
     from mailer.models.franchises import FranchiseManager
 
     if Installer.exists(installed=True) is False:
+        print("********************************************************")
+        print("*                                                      *")
+        print("*                  Welcome to Mailer                   *")
+        print("*                                                      *")
+        print("********************************************************")
         print("Please enter the following info to create an admin user.")
         username = input("username: ")
         password = getpass("password: ")

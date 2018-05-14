@@ -19,6 +19,7 @@ pymysqldb = "*"
 flask-login = "*"
 flask-principal = "*"
 "flake8" = "*"
+flask-wtf = "*"
 
 [requires]
 python_version = "3.6"

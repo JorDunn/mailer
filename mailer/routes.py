@@ -1,8 +1,8 @@
 import typing
 from functools import wraps
-from pprint import pprint
 
-from flask import (Blueprint, Response, flash, redirect, render_template, request)
+from flask import (Blueprint, Response, flash, redirect, render_template,
+                   request)
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.customers import CustomerManager
@@ -20,13 +20,11 @@ def login_required(f):
         try:
             args: typing.Dict(str, typing.Any) = request.args
             if SessionManager.validate(args['token']):
-                print("Valid token")
                 return f(**kwargs)
             else:
-                print("Invalid token")
                 return redirect('/login')
-        except BadRequestKeyError:
-            print("No token detected")
+        except BadRequestKeyError as err:
+            print(err)
             return redirect('/login')
     return decorator
 
@@ -85,7 +83,7 @@ def queue_add_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
     if CustomerManager.add_customer(form['first_name'], form['last_name'], form['email'], form['phone']):
-        customer = CustomerManager.get_customer_by_email(form['email'])
+        customer = CustomerManager.get_customer(email=form['email'])
     else:
         return redirect('/queue/add?token=' + args['token'])
     if QueueManager.add_queue(customer.customer_id):
@@ -109,8 +107,7 @@ def queue_remove(queue_id: int) -> Response:
 @login_required
 def customers() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    customers = CustomerManager.get_customers()
-    return render_template('customers.j2', title='Customers', token=args['token'], current_link='customers', customers=customers)
+    return render_template('customers.j2', title='Customers', token=args['token'], current_link='customers', customers=CustomerManager.get_customers())
 
 
 @app_routes.route('/customers/add', methods=['GET'])
@@ -143,7 +140,7 @@ def customers_remove(customer_id: int) -> Response:
 @login_required
 def customers_edit(customer_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    customer = CustomerManager.get_customer_by_id(customer_id)
+    customer = CustomerManager.get_customer(customer_id=customer_id)
     return render_template('customers_edit.j2', title='Add Customer', token=args['token'], current_link='customers', customer=customer)
 
 
@@ -202,7 +199,6 @@ def templates_edit(template_id: int) -> Response:
 def templates_edit_do() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    pprint(form)
     TemplateManager.update_template(template_id=form['template_id'],
                                     name=form['title'], body=form['template'], expires=form['expires'])
     return redirect('/templates?token=' + args['token'])

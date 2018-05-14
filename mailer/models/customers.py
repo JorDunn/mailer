@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Sequence
 
 from flask import flash
 from pony.orm import db_session
@@ -26,26 +26,21 @@ class CustomerManager(object):
 
     @classmethod
     @db_session
-    def get_customer_by_id(cls, customer_id: int) -> Union[dict, bool]:
-        if Customers.exists(customer_id=customer_id):
-            try:
-                return Customers[customer_id]
-            except Exception as err:
-                print(err)
-                return False
-
-    @classmethod
-    @db_session
-    def get_customer_by_email(cls, email: str) -> Union[dict, bool]:
-        """This function is used when adding a customer to the queue. We don't want
-        multiple customers with the same info in the system, so we check to make sure
-        the email address doesn't already exist."""
-        if Customers.exists(email=email):
-            try:
-                return Customers.get(email=email)
-            except Exception as err:
-                print(err)
-                return False
+    def get_customer(cls, **kwargs: Sequence) -> Union[dict, bool]:
+        if 'email' in kwargs:
+            if Customers.exists(email=kwargs['email']):
+                try:
+                    return Customers.get(email=kwargs['email'])
+                except Exception as err:
+                    print(err)
+                    return False
+        elif 'customer_id' in kwargs:
+            if Customers.exists(customer_id=kwargs['customer_id']):
+                try:
+                    return Customers[kwargs['customer_id']]
+                except Exception as err:
+                    print(err)
+                    return False
 
     @classmethod
     @db_session
