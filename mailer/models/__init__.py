@@ -44,6 +44,7 @@ class Queue(db.Entity):
 
     queue_id = PrimaryKey(int, auto=True)
     customer_id = Required(int)
+    template_id = Required(int)
 
 
 class Sessions(db.Entity):

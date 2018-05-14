@@ -10,7 +10,7 @@ class QueueManager(object):
 
     @classmethod
     @db_session
-    def add_queue(cls, customer_id: int) -> bool:
+    def add_queue(cls, customer_id: int, template_id: int) -> bool:
         if Queue.exists(customer_id=customer_id):
             # We don't want to be spamming the customers.
             # Don't add to queue if they are already there.
@@ -18,7 +18,7 @@ class QueueManager(object):
             return False
         else:
             try:
-                Queue(customer_id=customer_id)
+                Queue(customer_id=customer_id, template_id=template_id)
                 return True
             except Exception as err:
                 flash("Error adding customer to the queue: {}".format(err), 'queue_error')

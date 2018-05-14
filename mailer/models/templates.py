@@ -2,8 +2,9 @@ from datetime import datetime
 from typing import Union
 
 from pony.orm import db_session
+from flask import flash
 
-from mailer.models import Templates
+from mailer.models import Templates, Queue
 
 
 class TemplateManager(object):
@@ -24,16 +25,20 @@ class TemplateManager(object):
     @classmethod
     @db_session
     def remove_template(cls, template_id: int) -> bool:
-        try:
-            if Templates.exists(template_id=template_id):
-                tpl = Templates[template_id]
-                tpl.delete()
-                return True
-            else:
-                return False
-        except Exception as err:
-            print(err)
+        if Queue.exists(template_id=template_id):
+            flash("Can't delete template when customers in queue require it.", 'template_error')
             return False
+        else:
+            try:
+                if Templates.exists(template_id=template_id):
+                    tpl = Templates[template_id]
+                    tpl.delete()
+                    return True
+                else:
+                    return False
+            except Exception as err:
+                print(err)
+                return False
 
     @classmethod
     @db_session
@@ -68,7 +73,7 @@ class TemplateManager(object):
 
     @classmethod
     @db_session
-    def get_template_list(cls) -> dict:
+    def get_templates(cls) -> dict:
         try:
             return Templates.select(lambda t: t.template_id > 0)[:]
         except Exception as err:

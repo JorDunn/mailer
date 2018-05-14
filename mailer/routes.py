@@ -74,7 +74,8 @@ def queue() -> Response:
 @login_required
 def queue_add() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    return render_template('queue_add.j2', title="Add Customer", current_link="queue", token=args['token'])
+    templates = TemplateManager.get_templates()
+    return render_template('queue_add.j2', title="Add Customer", current_link="queue", token=args['token'], templates=templates)
 
 
 @app_routes.route('/queue/add/do', methods=['POST'])
@@ -86,7 +87,7 @@ def queue_add_do() -> Response:
         customer = CustomerManager.get_customer(email=form['email'])
     else:
         return redirect('/queue/add?token=' + args['token'])
-    if QueueManager.add_queue(customer.customer_id):
+    if QueueManager.add_queue(customer.customer_id, form['template_id']):
         return redirect('/queue?token=' + args['token'])
     else:
         return redirect('/queue/add?token=' + args['token'])
@@ -158,7 +159,7 @@ def customers_edit_do() -> Response:
 @login_required
 def templates() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    tpl_list = TemplateManager.get_template_list()
+    tpl_list = TemplateManager.get_templates()
     return render_template('templates.j2', title='Templates', token=args['token'], current_link='templates', template_list=tpl_list)
 
 

@@ -13,6 +13,13 @@
             </div>
         </div>
     <br/><br/>
+    {% with messages = get_flashed_messages(category_filter=['template_error']) %}
+        {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endwith %}
     <table class="table table-striped text-center">
         <thead class="thead-dark">
             <tr>

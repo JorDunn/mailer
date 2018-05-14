@@ -36,6 +36,16 @@
                         <input name="phone" type="tel" class="form-control">
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="templates">Template</label>
+                        <select name="template_id" class="form-control">
+                            {% for template in templates %}
+                            <option value="{{ template.template_id }}">{{ template.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>   
                 <button type="submit" class="btn btn-primary float-right"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add</button>
             </form>
         </div>
