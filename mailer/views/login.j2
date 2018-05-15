@@ -3,14 +3,12 @@
 {% block content %}
 <br/><br/>
 <div class="col-lg-6 offset-lg-3">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
+    {% with messages = get_flashed_messages(category_filter=['login_error']) %}
         {% for message in messages %}
         <div class="alert alert-danger" role="alert">
             {{ message }}
         </div>
         {% endfor %}
-    {% endif %}
     {% endwith %}
     <br/>
     <div class="card">

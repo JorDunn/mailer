@@ -3,14 +3,12 @@
 {% block content %}
 <br/><br/>
 <div class="col-lg-8 offset-lg-2">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
+    {% with messages = get_flashed_messages(category_filter=['template_error']) %}
         {% for message in messages %}
         <div class="alert alert-danger" role="alert">
             {{ message }}
         </div>
         {% endfor %}
-    {% endif %}
     {% endwith %}
     <div class="card">
         <div class="card-body">
