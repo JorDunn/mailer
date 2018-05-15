@@ -12,5 +12,11 @@ try:
 except TypeError:
     print("Already bound to database")
 
-email = EmailManager()
-email.construct_email(1)
+with db_session:
+    try:
+        for q in Queue.select(lambda q: q.queue_id > 0):
+            email = EmailManager()
+            email.construct_email(q.queue_id)
+            email.send(debuglevel=1)
+    except Exception as err:
+        print(err)
