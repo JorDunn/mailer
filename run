@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.6
+
 from mailer.factory import create_app
 from mailer.config import Config
 
