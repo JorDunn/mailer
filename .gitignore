@@ -2,6 +2,7 @@
 .vscode
 .idea
 config.py
+mailer/mjml/*.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
