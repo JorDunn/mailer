@@ -4,6 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+flask = "*"
+pony = "*"
+flask-pony = "*"
+pynacl = "*"
+python-jose = "*"
+pymysqldb = "*"
 
 [dev-packages]
 pylint = "*"
