@@ -18,5 +18,6 @@ with db_session:
             email = EmailManager()
             email.construct_email(q.queue_id)
             email.send(debuglevel=1)
+            q.delete()
     except Exception as err:
         print(err)

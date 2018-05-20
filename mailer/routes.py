@@ -2,7 +2,7 @@ import typing
 from functools import wraps
 
 from flask import (Blueprint, Response, flash, redirect, render_template,
-                   request)
+                   request, url_for, current_app)
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.customers import CustomerManager

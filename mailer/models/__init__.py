@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pony.orm import Database, Required, Optional, PrimaryKey
+from pony.orm import Database, Required, Optional, PrimaryKey, LongUnicode
 
 
 db = Database()
@@ -61,7 +61,7 @@ class Templates(db.Entity):
 
     template_id = PrimaryKey(int, auto=True)
     name = Required(str)
-    body = Required(str)
+    body = Required(LongUnicode)
     added = Required(datetime)
     expires = Optional(datetime)
 

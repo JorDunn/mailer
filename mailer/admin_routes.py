@@ -2,7 +2,7 @@ import typing
 from functools import wraps
 
 from flask import (Blueprint, Response, flash, redirect, render_template,
-                   request)
+                   request, abort)
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.franchises import FranchiseManager
@@ -35,10 +35,10 @@ def admin_required(f):
             if UserManager.admin_verification(args['token']):
                 return f(**kwargs)
             else:
-                return redirect('/401?token=' + args['token'])
+                return abort(401)
         except Exception as err:
             print(err)
-            return redirect('/401?token=' + args['token'])
+            return abort(401)
     return decorator
 
 
@@ -47,7 +47,7 @@ def admin_required(f):
 @admin_required
 def index() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
-    return render_template('index.j2', title="Home", current_link="admin_home", token=args['token'], admin_view=True)
+    return render_template('admin.j2', title="Admin Home", current_link="admin_home", token=args['token'], admin_view=True)
 
 
 @admin_routes.route('/users', methods=['GET'])

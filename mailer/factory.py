@@ -1,10 +1,22 @@
 from getpass import getpass
 
-from flask import Flask
+from flask import Flask, current_app, render_template, request
 from pony.orm import db_session
 
 from mailer.config import Config
 from mailer.models import db
+
+from pprint import pprint
+
+
+def unauthorized(error):
+    args = request.args
+    return render_template('401.j2', title='Unauthorized', token=args['token'])
+
+
+def page_not_found(error):
+    args = request.args
+    return render_template('404.j2', title='Page not found', token=args['token'])
 
 
 def create_app():
@@ -24,6 +36,9 @@ def create_app():
         print("Already bound to database: ", err)
 
     installer()
+
+    app.register_error_handler(401, unauthorized)
+    app.register_error_handler(404, page_not_found)
 
     return app
 

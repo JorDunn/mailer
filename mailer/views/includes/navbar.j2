@@ -10,9 +10,6 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
         {% if admin_view == True %}
-            <li class="nav-item {% if current_link == "admin_home" %}active{% endif %}">
-                <a class="nav-link" href="/admin{% if token %}?token={{ token }}{% endif %}">Admin Home</a>
-            </li>
             <li class="nav-item {% if current_link == "franchises" %}active{% endif %}">
                 <a class="nav-link" href="/admin/franchises{% if token %}?token={{ token }}{% endif %}">Franchises</a>
             </li>
@@ -20,9 +17,6 @@
                 <a class="nav-link" href="/admin/users{% if token %}?token={{ token }}{% endif %}">Users</a>
             </li>
         {% else %}
-            <li class="nav-item {% if current_link == "home" %}active{% endif %}">
-                <a class="nav-link" href="/{% if token %}?token={{ token }}{% endif %}">Home</a>
-            </li>
             <li class="nav-item {% if current_link == "queue" %}active{% endif %}">
                 <a class="nav-link" href="/queue{% if token %}?token={{ token }}{% endif %}">Email Queue</a>
             </li>
