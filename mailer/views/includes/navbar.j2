@@ -31,11 +31,11 @@
         <ul class="navbar-nav ml-auto">
             {% if admin_view == True %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/?token={{ token }}">Home</a>
+                    <a class="nav-link" href="/{% if token %}?token={{ token }}{% endif %}">Home</a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin?token={{ token }}">Admin</a>
+                    <a class="nav-link" href="/admin{% if token %}?token={{ token }}{% endif %}">Admin</a>
                 </li>
             {% endif %}
             <li class="nav-item">
