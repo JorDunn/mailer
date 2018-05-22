@@ -30,7 +30,8 @@ def create_app():
 
     try:
         db.bind(provider=Config.PONY['provider'], user=Config.PONY['user'],
-                password=Config.PONY['password'], db=Config.PONY['dbname'])
+                password=Config.PONY['password'], db=Config.PONY['dbname'],
+                host=Config.PONY['host'], port=Config.PONY['port'])
         db.generate_mapping(create_tables=True)
     except Exception as err:
         print("Already bound to database: ", err)

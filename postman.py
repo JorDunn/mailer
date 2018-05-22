@@ -7,7 +7,8 @@ from mailer.config import Config
 
 try:
     db.bind(provider=Config.PONY['provider'], user=Config.PONY['user'],
-            password=Config.PONY['password'], db=Config.PONY['dbname'])
+            password=Config.PONY['password'], db=Config.PONY['dbname'],
+            host=Config.PONY['host'], port=Config.PONY['port'])
     db.generate_mapping()
 except TypeError:
     print("Already bound to database")
