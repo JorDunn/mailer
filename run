@@ -5,6 +5,6 @@ from mailer.config import Config
 
 if __name__ == '__main__':
     app = create_app()
-    app.env = 'dev'
-    app.debug = True
+    app.env = Config.ENV
+    app.debug = Config.DEBUG
     app.run(host=Config.HOST, port=Config.PORT)

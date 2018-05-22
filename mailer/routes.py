@@ -10,6 +10,7 @@ from mailer.models.queue import QueueManager
 from mailer.models.sessions import SessionManager
 from mailer.models.templates import TemplateManager
 from mailer.models.users import UserManager
+from pony.orm import db_session
 
 app_routes = Blueprint(__name__, 'app_routes')
 
@@ -189,6 +190,7 @@ def templates_remove(template_id: int) -> Response:
 
 @app_routes.route('/templates/edit/<int:template_id>', methods=['GET'])
 @login_required
+@db_session
 def templates_edit(template_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     tpl = TemplateManager.get_template(template_id=template_id)
