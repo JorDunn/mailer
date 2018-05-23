@@ -1,6 +1,6 @@
 from getpass import getpass
 
-from flask import Flask, current_app, render_template, request
+from flask import Flask, current_app, render_template, request, url_for
 from pony.orm import db_session
 
 from mailer.config import Config
@@ -20,7 +20,7 @@ def page_not_found(error):
 
 
 def create_app():
-    app = Flask(__name__, template_folder='views')
+    app = Flask(__name__, template_folder='views', static_folder='static', static_url_path='/')
     app.config.from_object('mailer.config.Config')
 
     from mailer.routes import app_routes

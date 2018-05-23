@@ -1,8 +1,9 @@
 import typing
 from functools import wraps
+import os
 
 from flask import (Blueprint, Response, flash, redirect, render_template,
-                   request, url_for, current_app)
+                   request, url_for, current_app, send_from_directory)
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.customers import CustomerManager
@@ -28,6 +29,12 @@ def login_required(f):
             print(err)
             return redirect('/login')
     return decorator
+
+
+@app_routes.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app_routes.route('/', methods=['GET'])
