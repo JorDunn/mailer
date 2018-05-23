@@ -30,3 +30,6 @@ flask-wtf = "*"
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+postman = "python postman.py"
