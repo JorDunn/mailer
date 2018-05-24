@@ -3,8 +3,19 @@
 # Mailer
 A utility for sending emails to customers.
 
-# TODO
+# Crontab
+Cron can be used to send emails with postman.py on a set interval. I would highly recommend doing some research on what the best times are for your target audience (i.e. lawyers, soccer moms, etc) are. I've included an example blow:
+
+    # Send emails out at 11:00am every weekday
+    0 11 * * 1-5 cd /path/to/mailer && pipenv run postman
+
+You will most likely have to setup PATH in your crontab so it knows where pipenv is. I would also highly recommend setting up sendmail to email you if there are any errors. Amazon AWS has a really nice free tier that can be used to send emails and Zoho has free hosting with a custom domain if you need a mailbox. This project is not sponsored by either Amazon or Zoho, nor am I paid by them in any way.
+
+# TODO for v2.0
 * flask-login integration.
-* flask-principal integration.
-* Generators for some of the for loops?
-* unit testing. preferable using tox and pytest.
+* Fix models so that circular imports are avoided.
+* Fix models so that Users and UserManager arn't needed. It should just be a User class.
+* I need to really setup tox and pytest.
+* Look into use Vue for part of the UI.
+* Expand mjml support to allow editing full template in mailer.
+* Allow adding of customers to queue from customers page.
