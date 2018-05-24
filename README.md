@@ -4,6 +4,7 @@
 A utility for sending emails to customers.
 
 Run mailer using this command:
+
     gunicorn -c gconfig.py run:app
 
 # Crontab
