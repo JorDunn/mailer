@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             <tr>
-                <form action="/admin/franchises/add/do?token={{ token }}" method="post" class="form">
+                <form action="{{ url_for('mailer.admin_routes.franchises_add_do', token=token) }}" method="post" class="form">
                     <td></td>
                     <th scope="row"><input type="input" name="name" value="Franchise Name" class="form-control"></th>
                     <td><button type="submit" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Franchise</button></td>
@@ -28,9 +28,10 @@
             </tr>
             {% for franchise in franchises %}
             <tr>
-                <td><a href="/admin/franchises/edit/{{ franchise.franchise_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <td><!--<a href="/admin/franchises/edit/{{ franchise.franchise_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a>--></td>
                 <th scope="row">{{ franchise.name }}</th>
-                <td><a href="/admin/franchises/remove/{{ franchise.franchise_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="{{ url_for('mailer.admin_routes.franchises_remove', franchise_id=franchise.franchise_id, token=token) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <!--<td><a href="/admin/franchises/remove/{{ franchise.franchise_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>-->
             </tr>
             {% endfor %}
         </tbody>
