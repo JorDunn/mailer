@@ -9,9 +9,9 @@ pony = "*"
 flask-pony = "*"
 pynacl = "*"
 python-jose = "*"
-pymysqldb = "*"
 gunicorn = "*"
 setproctitle = "*"
+mysqlclient = "*"
 
 [dev-packages]
 pylint = "*"
@@ -23,11 +23,11 @@ pony = "*"
 flask-pony = "*"
 pynacl = "*"
 python-jose = "*"
-pymysqldb = "*"
 flask-login = "*"
 flask-principal = "*"
 "flake8" = "*"
 flask-wtf = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.6"
