@@ -26,11 +26,11 @@
         <tbody>
             {% for customer in customers %}
             <tr>
-                <td><a href="/customers/edit/{{ customer.customer_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <td><a href="{{ url_for('mailer.routes.customers_edit', customer_id=customer.customer_id, token=token) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ customer.email }}</th>
                 <td>{{ customer.first_name }} {{ customer.last_name }}</td>
                 <td>{{ customer.phone }}</td>
-                <td><a href="/customers/remove/{{ customer.customer_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="{{ url_for('mailer.routes.customers_remove', customer_id=customer.customer_id, token=token) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
             {% endfor %}
         </tbody>

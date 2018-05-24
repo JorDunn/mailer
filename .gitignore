@@ -3,6 +3,7 @@
 .idea
 config.py
 mailer/mjml/*.html
+mailer/mjml/*.mjml
 .DS_Store
 log/
 

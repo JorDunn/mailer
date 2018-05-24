@@ -24,10 +24,10 @@ def login_required(f):
             if SessionManager.validate(args['token']):
                 return f(**kwargs)
             else:
-                return redirect(url_for('mailer.routes.login'))
+                return redirect(url_for('.login'))
         except BadRequestKeyError as err:
             print(err)
-            return redirect(url_for('mailer.routes.login'))
+            return redirect(url_for('.login'))
     return decorator
 
 
@@ -55,20 +55,20 @@ def login_do() -> Response:
     if form['username'] and form['password']:
         res = UserManager.validate(form['username'], form['password'])
         if res is not False:
-            qs = {'token': str(res)}
-            return redirect(url_for('mailer.routes.index', **qs))
+            qs: typing.Dict(str, str) = {'token': str(res)}
+            return redirect(url_for('.index', **qs))
             # return redirect('/?token=' + str(res))
         else:
             flash('Invalid username and/or password', 'login_error')
-            return redirect(url_for('mailer.routes.login'))
+            return redirect(url_for('.login'))
     else:
         flash('Invalid username and/or password', 'login_error')
-        return redirect(url_for('mailer.routes.login'))
+        return redirect(url_for('.login'))
 
 
 @app_routes.route('/logout', methods=['GET'])
 def logout() -> Response:
-    return redirect(url_for('mailer.routes.login'))
+    return redirect(url_for('.login'))
 
 
 @app_routes.route('/queue', methods=['GET'])
@@ -90,29 +90,27 @@ def queue_add() -> Response:
 @app_routes.route('/queue/add/do', methods=['POST'])
 @login_required
 def queue_add_do() -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    qs = {'token': args['token']}
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     if CustomerManager.add_customer(form['first_name'], form['last_name'], form['email'], form['phone']):
         customer = CustomerManager.get_customer(email=form['email'])
     else:
-        return redirect(url_for('mailer.routes.queue_add', **qs))
+        return redirect(url_for('.queue_add', **qs))
     if QueueManager.add_queue(customer.customer_id, form['template_id']):
-        return redirect(url_for('mailer.routes.queue', **qs))
+        return redirect(url_for('.queue', **qs))
     else:
-        return redirect(url_for('mailer.routes.queue_add', **qs))
+        return redirect(url_for('.queue_add', **qs))
 
 
 @app_routes.route('/queue/remove/<int:queue_id>', methods=['GET'])
 @login_required
 def queue_remove(queue_id: int) -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
-    qs = {'token': args['token']}
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     if QueueManager.remove_queue(queue_id):
-        return redirect(url_for('mailer.routes.queue', **qs))
+        return redirect(url_for('.queue', **qs))
     else:
         flash("Error removing customer from queue")
-        return redirect(url_for('mailer.routes.queue', **qs))
+        return redirect(url_for('.queue', **qs))
 
 
 @app_routes.route('/customers', methods=['GET'])
@@ -132,21 +130,21 @@ def customers_add() -> Response:
 @app_routes.route('/customers/add/do', methods=['POST'])
 @login_required
 def customers_add_do() -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
-    qs = {'token': args['token']}
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     if CustomerManager.add_customer(first_name=form['first_name'], last_name=form['last_name'], email=form['email'], phone=form['phone']):
-        return redirect(url_for('mailer.routes.customers', **qs))
+        return redirect(url_for('.customers', **qs))
     else:
-        return redirect(url_for('mailer.routes.customers_add', **qs))
+        return redirect(url_for('.customers_add', **qs))
 
 
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
 @login_required
 def customers_remove(customer_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
+    qs: typing.Dict(str, str) = {'token': args['token']}
     CustomerManager.remove_customer(customer_id=customer_id)
-    return redirect('/customers?token=' + args['token'])
+    return redirect(url_for('.customers', **qs))
 
 
 @app_routes.route('/customers/edit/<int:customer_id>', methods=['GET'])
@@ -160,11 +158,11 @@ def customers_edit(customer_id: int) -> Response:
 @app_routes.route('/customers/edit/do', methods=['POST'])
 @login_required
 def customers_edit_do() -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     CustomerManager.update_customer(customer_id=form['customer_id'], first_name=form['first_name'],
                                     last_name=form['last_name'], email=form['email'], phone=form['phone'])
-    return redirect('/customers?token=' + args['token'])
+    return redirect(url_for('.customers', **qs))
 
 
 @app_routes.route('/templates', methods=['GET'])
@@ -185,18 +183,18 @@ def templates_add() -> Response:
 @app_routes.route('/templates/add/do', methods=['POST'])
 @login_required
 def templates_add_do() -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     TemplateManager.add_template(name=form['title'], body=form['template'], expires=form['expires'])
-    return redirect('/templates?token=' + args['token'])
+    return redirect(url_for('.templates', **qs))
 
 
 @app_routes.route('/templates/remove/<int:template_id>', methods=['GET'])
 @login_required
 def templates_remove(template_id: int) -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
+    qs: typing.Dict(str, str) = request.args.get('token')
     TemplateManager.remove_template(template_id=template_id)
-    return redirect('/templates?token=' + args['token'])
+    return redirect(url_for('.templates', **qs))
 
 
 @app_routes.route('/templates/edit/<int:template_id>', methods=['GET'])
@@ -211,8 +209,8 @@ def templates_edit(template_id: int) -> Response:
 @app_routes.route('/templates/edit/do', methods=['POST'])
 @login_required
 def templates_edit_do() -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
     form: typing.Dict(str, typing.Any) = request.form
+    qs: typing.Dict(str, str) = request.args.get('token')
     TemplateManager.update_template(template_id=form['template_id'],
                                     name=form['title'], body=form['template'], expires=form['expires'])
-    return redirect('/templates?token=' + args['token'])
+    return redirect(url_for('.templates', **qs))
