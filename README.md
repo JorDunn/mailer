@@ -4,7 +4,7 @@
 A utility for sending emails to customers.
 
 # Crontab
-Cron can be used to send emails with postman.py on a set interval. I would highly recommend doing some research on what the best times are for your target audience (i.e. lawyers, soccer moms, etc) are. I've included an example blow:
+Cron can be used to send emails with postman.py on a set interval. I would highly recommend doing some research on what the best times are for your target audience (e.g. lawyers, soccer moms, etc) are. I've included an example blow:
 
     # Send emails out at 11:00am every weekday
     0 11 * * 1-5 cd /path/to/mailer && pipenv run postman
@@ -19,3 +19,7 @@ You will most likely have to setup PATH in your crontab so it knows where pipenv
 * Look into use Vue for part of the UI.
 * Expand mjml support to allow editing full template in mailer.
 * Allow adding of customers to queue from customers page.
+* Change franchises to groups and a dropdown on the login form to select users group. This would allow for multiple users to have the same username in different groups.
+* Alternativly, have users login like an email address (e.g. user@group).
+* Use flasks g object for user info, in unison with flask-login.
+* Create more fine grain permissions for users.
