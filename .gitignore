@@ -4,7 +4,7 @@
 config.py
 mailer/mjml/*.html
 .DS_Store
-
+log/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
