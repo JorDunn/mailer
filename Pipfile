@@ -11,6 +11,7 @@ pynacl = "*"
 python-jose = "*"
 pymysqldb = "*"
 gunicorn = "*"
+setproctitle = "*"
 
 [dev-packages]
 pylint = "*"
