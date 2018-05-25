@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title text-center">Add User</h5>
-            <form action="/admin/users/add/do?token={{ token }}" method="post">
+            <form action="{{ url_for('mailer.admin_routes.users_add_do', token=token) }}" method="post">
                 <div class="row">
                 <div class="form-group col-lg-6">
                     <label for="title">Username</label>

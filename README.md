@@ -21,6 +21,7 @@ You will most likely have to setup PATH in your crontab so it knows where pipenv
 * Fix models so that Users and UserManager arn't needed. It should just be a User class.
 * I need to really setup tox and pytest.
 * Look into use Vue for part of the UI.
+* Use javascript/Vue to insert form into the pages with tables, using buttons to reveal/hiden the form.
 * Expand mjml support to allow editing full template in mailer.
 * Allow adding of customers to queue from customers page.
 * Change franchises to groups and a dropdown on the login form to select users group. This would allow for multiple users to have the same username in different groups.

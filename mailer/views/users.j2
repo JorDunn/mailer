@@ -27,12 +27,12 @@
         <tbody>
             {% for user in users.values() %}
             <tr>
-                <td><a href="/admin/users/edit/{{ user.user_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <td><a href="{{ url_for('mailer.admin_routes.users_edit', user_id=user.user_id, token=token) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ user.username }}</th>
                 <td>{{ user.franchise_name }}</td>
                 <td>{{ user.first_name }} {{ user.last_name }}</td>
                 <td>{{ user.is_admin }}</td>
-                <td><a href="/admin/users/remove/{{ user.user_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="{{ url_for('mailer.admin_routes.users_remove', user_id=user.user_id, token=token) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
             {% endfor %}
         </tbody>

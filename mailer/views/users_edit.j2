@@ -13,30 +13,30 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title text-center">Edit User</h5>
-            <form action="/admin/users/edit/do?token={{ token }}" method="post">
+            <form action="{{ url_for('mailer.admin_routes.users_edit_do', token=token) }}" method="post">
                 <div class="row">
-                <div class="form-group col-lg-6">
-                    <label for="title">Username</label>
-                    <input type="text" name="username" class="form-control" value="{{ user.username }}">
-                </div>
-                <div class="form-group col-lg-6">
-                    <label for="franchises">Franchise</label>
-                    <select name="franchises" class="form-control">
-                    {% for franchise in franchises %}
-                        <option value="{{ franchise.franchise_id }}" {% if franchise.franchise_id == user.franchise_id %} selected {% endif %}>{{ franchise.name }}</option>
-                    {% endfor %}
-                    </select>
-                </div>
+                    <div class="form-group col-lg-6">
+                        <label for="title">Username</label>
+                        <input type="text" name="username" class="form-control" value="{{ user.username }}">
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="franchises">Franchise</label>
+                        <select name="franchises" class="form-control">
+                        {% for franchise in franchises %}
+                            <option value="{{ franchise.franchise_id }}" {% if franchise.franchise_id == user.franchise_id %} selected {% endif %}>{{ franchise.name }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="row">
-                <div class="form-group col-lg-6">
-                    <label for="first_name">First Name</label>
-                    <input type="input" name="first_name" class="form-control" value="{{ user.first_name }}">
-                </div>
-                <div class="form-group col-lg-6">
-                    <label for="last_name">Last Name</label>
-                    <input type="input" name="last_name" class="form-control" value="{{ user.last_name }}">
-                </div>
+                    <div class="form-group col-lg-6">
+                        <label for="first_name">First Name</label>
+                        <input type="input" name="first_name" class="form-control" value="{{ user.first_name }}">
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="last_name">Last Name</label>
+                        <input type="input" name="last_name" class="form-control" value="{{ user.last_name }}">
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">

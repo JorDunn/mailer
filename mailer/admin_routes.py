@@ -138,3 +138,10 @@ def franchises_remove(franchise_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     FranchiseManager.remove_franchise(franchise_id)
     return redirect('/admin/franchises?token=' + args['token'])
+
+
+@admin_routes.route('/franchises/edit/<int:franchise_id>', methods=['GET'])
+@login_required
+@admin_required
+def franchises_edit(franchise_id: int) -> Response:
+    pass

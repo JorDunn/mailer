@@ -28,7 +28,7 @@
             </tr>
             {% for franchise in franchises %}
             <tr>
-                <td><!--<a href="/admin/franchises/edit/{{ franchise.franchise_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a>--></td>
+                <td><a href="{{ url_for('mailer.admin_routes.franchises_edit', franchise_id=franchise.franchise_id, token=token) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ franchise.name }}</th>
                 <td><a href="{{ url_for('mailer.admin_routes.franchises_remove', franchise_id=franchise.franchise_id, token=token) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
