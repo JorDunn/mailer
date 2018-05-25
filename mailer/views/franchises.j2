@@ -22,7 +22,7 @@
             <tr>
                 <form action="{{ url_for('mailer.admin_routes.franchises_add_do', token=token) }}" method="post" class="form">
                     <td></td>
-                    <th scope="row"><input type="input" name="name" value="Franchise Name" class="form-control"></th>
+                    <th scope="row"><input type="input" name="name" placeholder="Franchise Name" class="form-control"></th>
                     <td><button type="submit" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Franchise</button></td>
                 </form>
             </tr>
