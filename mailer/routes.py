@@ -4,6 +4,7 @@ from functools import wraps
 
 from flask import (Blueprint, Response, current_app, flash, redirect,
                    render_template, request, send_from_directory, url_for)
+from pony.orm import db_session
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.customers import CustomerManager
@@ -26,6 +27,7 @@ def login_required(f):
                 return redirect(url_for('.login'))
         except BadRequestKeyError as err:
             print(err)
+            print("Requested URL: {0}".format(request.url))
             return redirect(url_for('.login'))
     return decorator
 
@@ -49,6 +51,7 @@ def login() -> Response:
 
 
 @app_routes.route('/login/do', methods=['POST'])
+@db_session
 def login_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
     if form['username'] and form['password']:
@@ -56,7 +59,6 @@ def login_do() -> Response:
         if res is not False:
             qs: typing.Dict(str, str) = {'token': str(res)}
             return redirect(url_for('.index', **qs))
-            # return redirect('/?token=' + str(res))
         else:
             flash('Invalid username and/or password', 'login_error')
             return redirect(url_for('.login'))
@@ -72,6 +74,7 @@ def logout() -> Response:
 
 @app_routes.route('/queue', methods=['GET'])
 @login_required
+@db_session
 def queue() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     queue = QueueManager.get_queue()
@@ -80,6 +83,7 @@ def queue() -> Response:
 
 @app_routes.route('/queue/add', methods=['GET'])
 @login_required
+@db_session
 def queue_add() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     templates = TemplateManager.get_templates()
@@ -88,6 +92,7 @@ def queue_add() -> Response:
 
 @app_routes.route('/queue/add/do', methods=['POST'])
 @login_required
+@db_session
 def queue_add_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}
@@ -103,6 +108,7 @@ def queue_add_do() -> Response:
 
 @app_routes.route('/queue/remove/<int:queue_id>', methods=['GET'])
 @login_required
+@db_session
 def queue_remove(queue_id: int) -> Response:
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     if QueueManager.remove_queue(queue_id):
@@ -114,6 +120,7 @@ def queue_remove(queue_id: int) -> Response:
 
 @app_routes.route('/customers', methods=['GET'])
 @login_required
+@db_session
 def customers() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     return render_template('customers.j2', title='Customers', token=args['token'], current_link='customers', customers=CustomerManager.get_customers())
@@ -128,6 +135,7 @@ def customers_add() -> Response:
 
 @app_routes.route('/customers/add/do', methods=['POST'])
 @login_required
+@db_session
 def customers_add_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}
@@ -139,6 +147,7 @@ def customers_add_do() -> Response:
 
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
 @login_required
+@db_session
 def customers_remove(customer_id: int) -> Response:
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     CustomerManager.remove_customer(customer_id=customer_id)
@@ -147,6 +156,7 @@ def customers_remove(customer_id: int) -> Response:
 
 @app_routes.route('/customers/edit/<int:customer_id>', methods=['GET'])
 @login_required
+@db_session
 def customers_edit(customer_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     customer = CustomerManager.get_customer(customer_id=customer_id)
@@ -155,6 +165,7 @@ def customers_edit(customer_id: int) -> Response:
 
 @app_routes.route('/customers/edit/do', methods=['POST'])
 @login_required
+@db_session
 def customers_edit_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}
@@ -165,6 +176,7 @@ def customers_edit_do() -> Response:
 
 @app_routes.route('/templates', methods=['GET'])
 @login_required
+@db_session
 def templates() -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     tpl_list = TemplateManager.get_templates()
@@ -180,6 +192,7 @@ def templates_add() -> Response:
 
 @app_routes.route('/templates/add/do', methods=['POST'])
 @login_required
+@db_session
 def templates_add_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}
@@ -189,6 +202,7 @@ def templates_add_do() -> Response:
 
 @app_routes.route('/templates/remove/<int:template_id>', methods=['GET'])
 @login_required
+@db_session
 def templates_remove(template_id: int) -> Response:
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     TemplateManager.remove_template(template_id=template_id)
@@ -197,6 +211,7 @@ def templates_remove(template_id: int) -> Response:
 
 @app_routes.route('/templates/edit/<int:template_id>', methods=['GET'])
 @login_required
+@db_session
 def templates_edit(template_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     tpl = TemplateManager.get_template(template_id=template_id)
@@ -205,6 +220,7 @@ def templates_edit(template_id: int) -> Response:
 
 @app_routes.route('/templates/edit/do', methods=['POST'])
 @login_required
+@db_session
 def templates_edit_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
     qs: typing.Dict(str, str) = {'token': request.args.get('token')}

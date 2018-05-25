@@ -2,7 +2,6 @@ from typing import Any, Dict, Union
 
 from jose import jwt
 from nacl.pwhash import scrypt
-from pony.orm import commit
 
 from mailer.config import Config
 from mailer.models import Franchises, Users
@@ -18,7 +17,6 @@ class UserManager(object):
                 Users(franchise_id=franchise_id, first_name=first_name.capitalize(),
                       last_name=last_name.capitalize(), username=username.lower(),
                       password=scrypt.str(password.encode()), is_admin=is_admin)
-                commit()
                 return True
             except Exception as err:
                 print(err)
@@ -50,7 +48,6 @@ class UserManager(object):
                 if password:
                     user.password = scrypt.str(password.encode())
                 user.is_admin = is_admin
-                commit()
                 return True
             except Exception as err:
                 print(err)
@@ -120,7 +117,6 @@ class UserManager(object):
             users = Users.select(lambda u: u.franchise_id == franchise_id)
             for user in users:
                 user.franchise_id = 1
-            commit()
         except Exception as err:
             print(err)
             return False

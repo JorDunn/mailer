@@ -39,8 +39,6 @@ def create_app():
     app.register_error_handler(401, unauthorized)
     app.register_error_handler(404, page_not_found)
 
-    app.wsgi_app = db_session(app.wsgi_app)
-
     return app
 
 

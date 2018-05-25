@@ -1,7 +1,6 @@
 from typing import Any, Dict
 
 from flask import flash
-from pony.orm import commit
 
 from mailer.models import Customers, Queue, Templates
 
@@ -18,7 +17,6 @@ class QueueManager(object):
         else:
             try:
                 Queue(customer_id=customer_id, template_id=template_id)
-                commit()
                 return True
             except Exception as err:
                 flash("Error adding customer to the queue: {}".format(
@@ -32,7 +30,6 @@ class QueueManager(object):
             try:
                 queue = Queue[queue_id]
                 queue.delete()
-                commit()
                 return True
             except Exception as err:
                 print(err)

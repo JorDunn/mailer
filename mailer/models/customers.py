@@ -1,7 +1,6 @@
 from typing import Sequence, Union
 
 from flask import flash
-from pony.orm import commit
 
 from mailer.models import Customers, Queue
 
@@ -18,7 +17,6 @@ class CustomerManager(object):
             try:
                 Customers(first_name=first_name.capitalize(),
                           last_name=last_name.capitalize(), email=email.lower(), phone=phone)
-                commit()
                 return True
             except Exception as err:
                 flash("Error creating customer: {}".format(err), 'customer_error')
@@ -50,7 +48,6 @@ class CustomerManager(object):
                 queue_item.delete()
                 customer = Customers[customer_id]
                 customer.delete()
-                commit()
                 return True
             except Exception as err:
                 print(err)
@@ -67,7 +64,6 @@ class CustomerManager(object):
                 customer.last_name = last_name
                 customer.email = email
                 customer.phone = phone
-                commit()
                 return True
             except Exception as err:
                 print(err)

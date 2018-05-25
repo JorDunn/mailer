@@ -2,7 +2,6 @@ import datetime
 import time
 
 from jose import jwt
-from pony.orm import commit
 
 from mailer.config import Config
 from mailer.models import Sessions
@@ -19,7 +18,6 @@ class SessionManager(object):
                        'exp': future_time, 'nbf': current_time, 'iss': 'mailer'}
             token = jwt.encode(payload, Config.SECRET_KEY, algorithm='HS256')
             Sessions(token=token)
-            commit()
             return token
         except Exception as err:
             print(err)

@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import Union
 
 from flask import flash
-from pony.orm import commit
 
 from mailer.models import Queue, Templates
 
@@ -16,7 +15,6 @@ class TemplateManager(object):
                 Templates(name=name, body=body, added=datetime.utcnow(), expires=expires)
             else:
                 Templates(name=name, body=body, added=datetime.utcnow())
-            commit()
             return True
         except Exception as err:
             print(err)
@@ -50,7 +48,6 @@ class TemplateManager(object):
                     tpl.expires = expires
                 else:
                     tpl.expires = None
-                commit()
                 return True
             else:
                 return False
