@@ -12,7 +12,9 @@ class Config(object):
         'provider': 'mysql',
         'user': 'username',
         'password': 'password',
-        'dbname': 'mailer'
+        'dbname': 'mailer',
+        'host': 'localhost',
+        'port': 3306
     }
     # The password must be an app specific password if using gmail
     EMAIL: Dict[str, Any] = {
@@ -21,5 +23,6 @@ class Config(object):
         'display': 'Some User',
         'username': 'email',
         'domain': 'domain.tld',
-        'password': 'somepass'
+        'password': 'somepass',
+        'debuglevel': 1
     }

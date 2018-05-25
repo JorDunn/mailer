@@ -1,7 +1,7 @@
-from typing import Union, Sequence
+from typing import Sequence, Union
 
 from flask import flash
-from pony.orm import db_session
+from pony.orm import commit
 
 from mailer.models import Customers, Queue
 
@@ -9,7 +9,6 @@ from mailer.models import Customers, Queue
 class CustomerManager(object):
 
     @classmethod
-    @db_session
     def add_customer(cls, first_name: str, last_name: str, email: str, phone: int) -> bool:
         """Returns True if the customer already exists or is added, False is customer couldn't be added."""
         if Customers.exists(email=email):
@@ -17,7 +16,9 @@ class CustomerManager(object):
             return True
         else:
             try:
-                Customers(first_name=first_name, last_name=last_name, email=email, phone=phone)
+                Customers(first_name=first_name.capitalize(),
+                          last_name=last_name.capitalize(), email=email.lower(), phone=phone)
+                commit()
                 return True
             except Exception as err:
                 flash("Error creating customer: {}".format(err), 'customer_error')
@@ -25,7 +26,6 @@ class CustomerManager(object):
                 return False
 
     @classmethod
-    @db_session
     def get_customer(cls, **kwargs: Sequence) -> Union[dict, bool]:
         if 'email' in kwargs:
             if Customers.exists(email=kwargs['email']):
@@ -43,7 +43,6 @@ class CustomerManager(object):
                     return False
 
     @classmethod
-    @db_session
     def remove_customer(cls, customer_id: int) -> bool:
         if Customers.exists(customer_id=customer_id):
             try:
@@ -51,6 +50,7 @@ class CustomerManager(object):
                 queue_item.delete()
                 customer = Customers[customer_id]
                 customer.delete()
+                commit()
                 return True
             except Exception as err:
                 print(err)
@@ -59,7 +59,6 @@ class CustomerManager(object):
             return False
 
     @classmethod
-    @db_session
     def update_customer(cls, customer_id: int, first_name: str, last_name: str, email: str, phone: int) -> bool:
         if Customers.exists(customer_id=customer_id):
             try:
@@ -68,6 +67,7 @@ class CustomerManager(object):
                 customer.last_name = last_name
                 customer.email = email
                 customer.phone = phone
+                commit()
                 return True
             except Exception as err:
                 print(err)
@@ -76,7 +76,6 @@ class CustomerManager(object):
             return False
 
     @classmethod
-    @db_session
     def get_customers(cls) -> dict:
         try:
             return Customers.select(lambda c: c.customer_id > 0)[:]

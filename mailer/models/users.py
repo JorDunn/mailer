@@ -1,25 +1,25 @@
-from nacl.pwhash import scrypt
-from pony.orm import db_session
-
-from mailer.models import Franchises, Users
-from mailer.models.sessions import SessionManager
-
-from typing import Union, Dict, Any
+from typing import Any, Dict, Union
 
 from jose import jwt
+from nacl.pwhash import scrypt
+from pony.orm import commit
+
 from mailer.config import Config
+from mailer.models import Franchises, Users
+from mailer.models.sessions import SessionManager
 
 
 class UserManager(object):
 
     @classmethod
-    @db_session
     def add_user(cls, franchise_id: int, first_name: str, last_name: str, username: str, password: str, is_admin: bool) -> Union[None, bool]:
         if Users.exists(username=username) is False:
             try:
-                Users(franchise_id=franchise_id, first_name=first_name,
-                      last_name=last_name, username=username,
+                Users(franchise_id=franchise_id, first_name=first_name.capitalize(),
+                      last_name=last_name.capitalize(), username=username.lower(),
                       password=scrypt.str(password.encode()), is_admin=is_admin)
+                commit()
+                return True
             except Exception as err:
                 print(err)
                 return False
@@ -27,7 +27,6 @@ class UserManager(object):
             return False
 
     @classmethod
-    @db_session
     def remove_user(cls, user_id: int) -> bool:
         if Users.exists(user_id=user_id):
             try:
@@ -41,7 +40,6 @@ class UserManager(object):
             return False
 
     @classmethod
-    @db_session
     def update_user(cls, user_id: int, franchise_id: int, first_name: str, last_name: str, password: str, is_admin: bool) -> bool:
         if Users.exists(user_id=user_id):
             try:
@@ -52,6 +50,7 @@ class UserManager(object):
                 if password:
                     user.password = scrypt.str(password.encode())
                 user.is_admin = is_admin
+                commit()
                 return True
             except Exception as err:
                 print(err)
@@ -60,7 +59,6 @@ class UserManager(object):
             return False
 
     @classmethod
-    @db_session
     def validate(cls, username: str, password: str) -> Union[dict, bool]:
         if Users.exists(username=username):
             try:
@@ -76,7 +74,6 @@ class UserManager(object):
             return False
 
     @classmethod
-    @db_session
     def get_user(cls, user_id: int) -> dict:
         if Users.exists(user_id=user_id):
             try:
@@ -88,7 +85,6 @@ class UserManager(object):
             return False
 
     @classmethod
-    @db_session
     def get_users(cls) -> dict:
         try:
             data: Dict(str, Any) = {}
@@ -107,7 +103,6 @@ class UserManager(object):
             return {}
 
     @classmethod
-    @db_session
     def admin_verification(cls, token):
         try:
             token_decoded = jwt.decode(token, Config.SECRET_KEY, algorithms='HS256', issuer='mailer')
@@ -120,12 +115,12 @@ class UserManager(object):
             return False
 
     @classmethod
-    @db_session
     def update_user_franchises(cls, franchise_id):
         try:
             users = Users.select(lambda u: u.franchise_id == franchise_id)
             for user in users:
                 user.franchise_id = 1
+            commit()
         except Exception as err:
             print(err)
             return False

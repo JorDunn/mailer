@@ -27,14 +27,19 @@
                 </form>
             </tr>
             {% for franchise in franchises %}
+            {% if franchise.name != "Null" %}
             <tr>
                 <td><a href="{{ url_for('mailer.admin_routes.franchises_edit', franchise_id=franchise.franchise_id, token=token) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ franchise.name }}</th>
                 <td><a href="{{ url_for('mailer.admin_routes.franchises_remove', franchise_id=franchise.franchise_id, token=token) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
+    {% if franchises|length == 1 %}
+        <h4 class="text-center">No franchises have been added.</h4>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

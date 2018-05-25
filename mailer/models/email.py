@@ -1,9 +1,8 @@
 import smtplib
-from pathlib import Path
-
 from email.headerregistry import Address
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from pathlib import Path
 
 from mailer.config import Config
 from mailer.models.queue import QueueManager

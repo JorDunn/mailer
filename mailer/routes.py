@@ -1,9 +1,9 @@
+import os
 import typing
 from functools import wraps
-import os
 
-from flask import (Blueprint, Response, flash, redirect, render_template,
-                   request, url_for, current_app, send_from_directory)
+from flask import (Blueprint, Response, current_app, flash, redirect,
+                   render_template, request, send_from_directory, url_for)
 from werkzeug.exceptions import BadRequestKeyError
 
 from mailer.models.customers import CustomerManager
@@ -11,7 +11,6 @@ from mailer.models.queue import QueueManager
 from mailer.models.sessions import SessionManager
 from mailer.models.templates import TemplateManager
 from mailer.models.users import UserManager
-from pony.orm import db_session
 
 app_routes = Blueprint(__name__, 'app_routes')
 
@@ -141,8 +140,7 @@ def customers_add_do() -> Response:
 @app_routes.route('/customers/remove/<int:customer_id>', methods=['GET'])
 @login_required
 def customers_remove(customer_id: int) -> Response:
-    args: typing.Dict(str, typing.Any) = request.args
-    qs: typing.Dict(str, str) = {'token': args['token']}
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     CustomerManager.remove_customer(customer_id=customer_id)
     return redirect(url_for('.customers', **qs))
 
@@ -192,14 +190,13 @@ def templates_add_do() -> Response:
 @app_routes.route('/templates/remove/<int:template_id>', methods=['GET'])
 @login_required
 def templates_remove(template_id: int) -> Response:
-    qs: typing.Dict(str, str) = request.args.get('token')
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     TemplateManager.remove_template(template_id=template_id)
     return redirect(url_for('.templates', **qs))
 
 
 @app_routes.route('/templates/edit/<int:template_id>', methods=['GET'])
 @login_required
-@db_session
 def templates_edit(template_id: int) -> Response:
     args: typing.Dict(str, typing.Any) = request.args
     tpl = TemplateManager.get_template(template_id=template_id)
@@ -210,7 +207,7 @@ def templates_edit(template_id: int) -> Response:
 @login_required
 def templates_edit_do() -> Response:
     form: typing.Dict(str, typing.Any) = request.form
-    qs: typing.Dict(str, str) = request.args.get('token')
+    qs: typing.Dict(str, str) = {'token': request.args.get('token')}
     TemplateManager.update_template(template_id=form['template_id'],
                                     name=form['title'], body=form['template'], expires=form['expires'])
     return redirect(url_for('.templates', **qs))

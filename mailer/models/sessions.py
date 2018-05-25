@@ -2,7 +2,7 @@ import datetime
 import time
 
 from jose import jwt
-from pony.orm import db_session
+from pony.orm import commit
 
 from mailer.config import Config
 from mailer.models import Sessions
@@ -11,7 +11,6 @@ from mailer.models import Sessions
 class SessionManager(object):
 
     @classmethod
-    @db_session
     def add_session(cls, username, is_admin):
         try:
             current_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=-1)
@@ -20,13 +19,13 @@ class SessionManager(object):
                        'exp': future_time, 'nbf': current_time, 'iss': 'mailer'}
             token = jwt.encode(payload, Config.SECRET_KEY, algorithm='HS256')
             Sessions(token=token)
+            commit()
             return token
         except Exception as err:
             print(err)
             return False
 
     @classmethod
-    @db_session
     def remove_session(cls, token):
         if Sessions.exists(token=token):
             try:
@@ -40,7 +39,6 @@ class SessionManager(object):
             return False
 
     @classmethod
-    @db_session
     def validate(cls, token):
         """Checks to see if a session token is valid still"""
         try:

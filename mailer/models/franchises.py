@@ -1,5 +1,5 @@
 from flask import flash
-from pony.orm import db_session
+from pony.orm import commit
 
 from mailer.models import Franchises
 from mailer.models.users import UserManager
@@ -8,7 +8,6 @@ from mailer.models.users import UserManager
 class FranchiseManager(object):
 
     @classmethod
-    @db_session
     def add_franchise(cls, name: str) -> bool:
         if Franchises.exists(name=name):
             flash("A franchise with that name already exists", 'franchise_error')
@@ -16,6 +15,7 @@ class FranchiseManager(object):
         else:
             try:
                 Franchises(name=name)
+                commit()
                 return True
             except Exception as err:
                 flash("There was an error adding the franchise: {}".format(err), 'franchise_error')
@@ -23,7 +23,6 @@ class FranchiseManager(object):
                 return False
 
     @classmethod
-    @db_session
     def remove_franchise(cls, franchise_id: int) -> bool:
         if Franchises.exists(franchise_id=franchise_id):
             try:
@@ -38,12 +37,12 @@ class FranchiseManager(object):
             return False
 
     @classmethod
-    @db_session
     def update_franchise(cls, franchise_id: int, name: str) -> bool:
         if Franchises.exists(franchise_id=franchise_id):
             try:
                 franchise = Franchises[franchise_id]
                 franchise.name = name
+                commit()
                 return True
             except Exception as err:
                 print(err)
@@ -52,7 +51,6 @@ class FranchiseManager(object):
             return False
 
     @classmethod
-    @db_session
     def get_franchises(cls) -> dict:
         try:
             return Franchises.select(lambda f: f.franchise_id >= 0)[:]

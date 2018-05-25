@@ -1,12 +1,10 @@
 from getpass import getpass
 
-from flask import Flask, current_app, render_template, request, url_for
+from flask import Flask, render_template, request
 from pony.orm import db_session
 
 from mailer.config import Config
 from mailer.models import db
-
-from pprint import pprint
 
 
 def unauthorized(error):
@@ -34,12 +32,14 @@ def create_app():
                 host=Config.PONY['host'], port=Config.PONY['port'])
         db.generate_mapping(create_tables=True)
     except Exception as err:
-        print("Already bound to database: ", err)
+        print(err)
 
     installer()
 
     app.register_error_handler(401, unauthorized)
     app.register_error_handler(404, page_not_found)
+
+    app.wsgi_app = db_session(app.wsgi_app)
 
     return app
 
