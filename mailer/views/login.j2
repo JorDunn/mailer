@@ -14,13 +14,14 @@
     <div class="card">
         <div class="card-body">
             <h3 class="card-title">Login</h3>
-            <form action="{{ url_for('mailer.routes.login_do') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <form action="{{ url_for('mailer.routes.login') }}" method="post" enctype="application/x-www-form-urlencoded">
                 <div class="form-group">
                     <input name="username" type="text" class="form-control" id="username" placeholder="Username">
                 </div>
                 <div class="form-group">
                     <input name="password" type="password" class="form-control" id="password" placeholder="Password">
                 </div>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <button type="submit" class="btn btn-primary float-right">Login</button>
             </form>
         </div>

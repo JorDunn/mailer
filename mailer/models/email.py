@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 from pathlib import Path
 
 from mailer.config import Config
-from mailer.models.queue import QueueManager
+from mailer.models import Queue
 
 
 class EmailManager(object):

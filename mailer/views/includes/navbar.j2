@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
     {% if admin_view == True %}
         <a class="navbar-brand" href="/admin{% if token %}?token={{ token }}{% endif %}" style="color:orange">Mailer Admin</a>
     {% else %}
@@ -9,14 +9,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-        {% if admin_view == True and token %}
+        {% if admin_view == True and g.user.is_authenticated %}
             <li class="nav-item {% if current_link == "franchises" %}active{% endif %}">
                 <a class="nav-link" href="/admin/franchises{% if token %}?token={{ token }}{% endif %}">Franchises</a>
             </li>
             <li class="nav-item {% if current_link == "users" %}active{% endif %}">
                 <a class="nav-link" href="/admin/users{% if token %}?token={{ token }}{% endif %}">Users</a>
             </li>
-        {% elif token %}
+        {% elif g.user.is_authenticated %}
             <li class="nav-item {% if current_link == "queue" %}active{% endif %}">
                 <a class="nav-link" href="/queue{% if token %}?token={{ token }}{% endif %}">Email Queue</a>
             </li>
@@ -29,20 +29,14 @@
         {% endif %}
         </ul>
         <ul class="navbar-nav ml-auto">
-            {% if admin_view == True and token %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/{% if token %}?token={{ token }}{% endif %}">Home</a>
-                </li>
-            {% elif token %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin{% if token %}?token={{ token }}{% endif %}">Admin</a>
-                </li>
-            {% endif %}
             <li class="nav-item">
-                {% if token %}
-                    <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/logout">Logout</a>
+                <a class="nav-link {% if current_link == "profile" %}active{% endif %}" href="{{ url_for('.login') }}">{{ g.user.username }}</a>
+            </li>
+            <li class="nav-item">
+                {% if g.user.is_authenticated %}
+                    <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="{{ url_for('.logout') }}">Logout</a>
                 {% else %}
-                    <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="/login">Login</a>
+                    <a class="nav-link {% if current_link == "login" %}active{% endif %}" href="{{ url_for('.login') }}">Login</a>
                 {% endif %}
             </li>
         </ul>

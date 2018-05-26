@@ -15,10 +15,12 @@
     <body>
         <div class="container">
             {% include "includes/navbar.j2" %}
+            <br/><br/><br/>
             {% block content %}
             {% endblock %}
             <footer class="text-center" style="margin-top: 20px;">
-                <p>Copyright &copy; 2018, Jordan Dunn. All Rights Reserved. <a href="mailto:me@jordan-dunn.com">Contact Me</a></p>
+                <p>Copyright &copy; 2018, Jordan Dunn. All Rights Reserved. <a href="mailto:me@jordan-dunn.com">Contact Me</a>.</p>
+                 Render Time: {{ g.request_time() }}
             </footer>
         </div>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
