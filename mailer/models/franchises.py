@@ -1,4 +1,5 @@
 from flask import flash
+from pony.orm import commit
 
 from mailer.models import Franchises
 from mailer.models.users import UserManager
@@ -14,6 +15,7 @@ class FranchiseManager(object):
         else:
             try:
                 Franchises(name=name)
+                commit()
                 return True
             except Exception as err:
                 flash("There was an error adding the franchise: {}".format(err), 'franchise_error')
@@ -40,6 +42,7 @@ class FranchiseManager(object):
             try:
                 franchise = Franchises[franchise_id]
                 franchise.name = name
+                commit()
                 return True
             except Exception as err:
                 print(err)

@@ -12,6 +12,8 @@ python-jose = "*"
 gunicorn = "*"
 setproctitle = "*"
 mysqlclient = "*"
+"flake8" = "*"
+"autopep8" = "*"
 
 [dev-packages]
 pylint = "*"

@@ -19,16 +19,17 @@ app_routes = Blueprint(__name__, 'app_routes')
 def login_required(f):
     @wraps(f)
     def decorator(**kwargs):
-        try:
-            args: typing.Dict(str, typing.Any) = request.args
-            if SessionManager.validate(args['token']):
-                return f(**kwargs)
-            else:
+        with db_session:
+            try:
+                args: typing.Dict(str, typing.Any) = request.args
+                if SessionManager.validate(args['token']):
+                    return f(**kwargs)
+                else:
+                    return redirect(url_for('.login'))
+            except BadRequestKeyError as err:
+                print(err)
+                print("Requested URL: {0}".format(request.url))
                 return redirect(url_for('.login'))
-        except BadRequestKeyError as err:
-            print(err)
-            print("Requested URL: {0}".format(request.url))
-            return redirect(url_for('.login'))
     return decorator
 
 
