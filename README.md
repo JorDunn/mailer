@@ -1,7 +1,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0591b76f51d54a39b725ea2d296adc9b)](https://www.codacy.com/app/JorDunn/mailer?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JorDunn/mailer&amp;utm_campaign=Badge_Grade)
 
 # Mailer
-A utility for sending emails to customers.
+A utility for sending emails to customers. Currently under construction for its v1.1.0 release. Master will most likely be broken, use the 1.0.0 branch.
 
 Run mailer using this command:
 
