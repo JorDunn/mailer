@@ -21,8 +21,9 @@ def login_required(f):
     def decorator(**kwargs):
         with db_session:
             try:
-                args: typing.Dict(str, typing.Any) = request.args
-                if SessionManager.validate(args['token']):
+                # set token to 'no_valid_token' if token doesnt exist. this stops 400 bad request errors.
+                token = request.args.get('token', 'no_valid_token')
+                if SessionManager.validate(token):
                     return f(**kwargs)
                 else:
                     return redirect(url_for('.login'))
