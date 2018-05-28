@@ -1,7 +1,8 @@
 import os
 from time import time
+from functools import wraps
 from flask import (Blueprint, current_app, flash, redirect,
-                   render_template, request, send_from_directory, url_for, g)
+                   render_template, request, send_from_directory, url_for, g, abort)
 from pony.orm import db_session
 from mailer.extensions import login_manager
 from mailer.models import User, Role, Group, Subgroup
@@ -24,14 +25,29 @@ def load_user(user_id):
 
 
 @app_routes.before_request
+@db_session
 def before_request():
     request_start_time = time()
     g.user = current_user
     if g.user.is_anonymous:
-        g.permissions = Role.get_permissions(0)
+        g.role = None
+        g.group = None
+        g.subgroup = None
     else:
-        g.permissions = Role.get_permissions(g.user.uid)
+        g.role = Role.get_permissions(rid=g.user.role.rid)
+        g.group = Group.get_group(gid=g.user.group.gid)
+        g.subgroup = Subgroup.get(gid=g.group.gid)
     g.request_time = lambda: "%.5fs" % (time() - request_start_time)
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorator(**kwargs):
+        if g.user.is_admin:
+            return f(**kwargs)
+        else:
+            return abort(401)
+    return decorator
 
 
 @app_routes.route('/favicon.ico')
@@ -40,24 +56,24 @@ def favicon():
 
 
 @app_routes.route('/login', methods=['GET', 'POST'])
+@db_session
 def login():
     if request.method == 'GET':
         return render_template('login.j2', title="Login", current_link="login")
     elif request.method == 'POST':
-        with db_session:
-            username = request.form.get('username', None)
-            password = request.form.get('password', None)
-            if username and password:
-                user = User.authenticate(username=username, password=password)
-                if user:
-                    login_user(user)
-                    return redirect(request.args.get('next', url_for('.index')))
-                else:
-                    flash('Invalid username and/or password', 'login_error')
-                    return redirect(url_for('.login'))
+        username = request.form.get('username', None)
+        password = request.form.get('password', None)
+        if username and password:
+            user = User.authenticate(username=username, password=password)
+            if user:
+                login_user(user)
+                return redirect(request.args.get('next', url_for('.index')))
             else:
                 flash('Invalid username and/or password', 'login_error')
                 return redirect(url_for('.login'))
+        else:
+            flash('Invalid username and/or password', 'login_error')
+            return redirect(url_for('.login'))
 
 
 @app_routes.route('/logout', methods=['GET'])
@@ -68,6 +84,7 @@ def logout():
 
 
 @app_routes.route('/', methods=['GET'])
+@db_session
 @login_required
 def index():
     # return redirect(url_for('.queue'))
