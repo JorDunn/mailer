@@ -224,6 +224,10 @@ class Queue(db.Entity):
     user = Required(User)
     template = Required('Template')
 
+    @classmethod
+    def get_all(cls):
+        return Queue.select().prefetch()
+
 
 class Template(db.Entity):
 

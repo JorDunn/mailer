@@ -1,13 +1,16 @@
 import os
-from time import time
+from datetime import datetime
 from functools import wraps
-from flask import (Blueprint, current_app, flash, redirect,
-                   render_template, request, send_from_directory, url_for, g, abort)
-from pony.orm import db_session
-from mailer.extensions import login_manager
-from mailer.models import User, Role, Group, Subgroup
-from flask_login import current_user, login_required, login_user, logout_user
+from time import time
 
+from flask import (Blueprint, abort, current_app, flash, g, redirect,
+                   render_template, request, send_from_directory, url_for)
+from flask_login import current_user, login_required, login_user, logout_user
+from pony.orm import db_session, commit
+
+from mailer.extensions import login_manager
+from mailer.models import (Customer, Group, Queue, Role, Subgroup, Template,
+                           User)
 
 app_routes = Blueprint(__name__, 'app_routes')
 
@@ -84,32 +87,72 @@ def logout():
 
 
 @app_routes.route('/', methods=['GET'])
-@db_session
 @login_required
+@db_session
 def index():
     # return redirect(url_for('.queue'))
     return render_template('index.j2', title="Home", current_link="home")
 
 
-@app_routes.route('/queue', methods=['GET', 'POST'])
+@app_routes.route('/queue', methods=['GET'])
 @login_required
+@db_session
 def queue():
-    return render_template('queue.j2', title='Queue', current_link='queue', queue={})
+    queue = Queue.get_all()
+    return render_template('queue.j2', title='Queue', current_link='queue', queue=queue)
 
 
-@app_routes.route('/customers', methods=['GET', 'POST'])
+@app_routes.route('/queue/add', methods=['GET', 'POST'])
+@login_required
+@db_session
+def queue_add():
+    if request.method == 'GET':
+        return render_template('queue_add.j2', title='Add to queue', current_link='queue')
+    elif request.method == 'POST':
+        if g.role.can_add_queue_items:
+            template = Template.get(tid=request.form.get('template_id', 0))
+            user = g.user
+            customer = Customer(first_name=request.form.get('first_name'),
+                                last_name=request.form.get('last_name'),
+                                email=request.form.get('email'),
+                                added_on=datetime.now())
+            commit()
+            queue_item = Queue(customer=customer, user=user, template=template)
+            customer.queue_item = queue_item
+            return redirect(url_for('.queue'))
+
+
+@app_routes.route('/customers', methods=['GET'])
 @login_required
 def customers():
     return render_template('customers.j2', title='Customers', current_link='customers', customers={})
 
 
-@app_routes.route('/templates', methods=['GET', 'POST'])
+@app_routes.route('/templates', methods=['GET'])
 @login_required
 def templates():
     return render_template('templates.j2', title='Templates', current_link='templates', templates={})
 
 
-@app_routes.route('/groups', methods=['GET', 'POST'])
+@app_routes.route('/templates/add', methods=['GET', 'POST'])
+@login_required
+@db_session
+def templates_add():
+    if g.role.can_add_templates:
+        if request.method == 'GET':
+            return render_template('templates_add.j2', title='Add template', current_link='templates')
+        elif request.method == 'POST':
+            Template(name=request.form.get('name'),
+                     subject=request.form.get('subject'),
+                     body=request.form.get('body'),
+                     added_by=request.form.get('username'),
+                     added_on=datetime.now(),
+                     expires_on=request.form.get('expires'))
+            commit()
+            return redirect(url_for('.templates'))
+
+
+@app_routes.route('/groups', methods=['GET'])
 @login_required
 @db_session
 @admin_required
@@ -117,7 +160,7 @@ def groups():
     return render_template('groups.j2', title='Group', current_link='groups', groups={})
 
 
-@app_routes.route('/subgroups', methods=['GET', 'POST'])
+@app_routes.route('/subgroups', methods=['GET'])
 @login_required
 @db_session
 @admin_required
@@ -125,7 +168,7 @@ def subgroups():
     pass
 
 
-@app_routes.route('/roles', methods=['GET', 'POST'])
+@app_routes.route('/roles', methods=['GET'])
 @login_required
 @db_session
 @admin_required
@@ -133,7 +176,7 @@ def roles():
     pass
 
 
-@app_routes.route('/users', methods=['GET', 'POST'])
+@app_routes.route('/users', methods=['GET'])
 @login_required
 @db_session
 @admin_required
@@ -141,7 +184,7 @@ def users():
     pass
 
 
-@app_routes.route('/profile', methods=['GET', 'POST'])
+@app_routes.route('/profile', methods=['GET'])
 @login_required
 def profile():
     pass

@@ -5,9 +5,11 @@
 <div class="col-lg-10 offset-lg-1">
     <div class="col-lg-12">
         <div class="row">
+            {% if g.role.can_add_templates %}
             <div class="col-lg-6">
-                <a href="/templates/add?token={{ token }}" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Template</a>
+                <a href="/templates/add" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Template</a>
             </div>
+            {% endif %}
             <div class="col-lg-6 text-right">
                 <h2>Templates</h2>
             </div>
