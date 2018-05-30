@@ -94,16 +94,54 @@ def index():
 @app_routes.route('/queue', methods=['GET', 'POST'])
 @login_required
 def queue():
-    pass
+    return render_template('queue.j2', title='Queue', current_link='queue', queue={})
 
 
 @app_routes.route('/customers', methods=['GET', 'POST'])
 @login_required
 def customers():
-    pass
+    return render_template('customers.j2', title='Customers', current_link='customers', customers={})
 
 
 @app_routes.route('/templates', methods=['GET', 'POST'])
 @login_required
 def templates():
+    return render_template('templates.j2', title='Templates', current_link='templates', templates={})
+
+
+@app_routes.route('/groups', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def groups():
+    return render_template('groups.j2', title='Group', current_link='groups', groups={})
+
+
+@app_routes.route('/subgroups', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def subgroups():
+    pass
+
+
+@app_routes.route('/roles', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def roles():
+    pass
+
+
+@app_routes.route('/users', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def users():
+    pass
+
+
+@app_routes.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
     pass

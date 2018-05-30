@@ -7,26 +7,26 @@
         <ul class="navbar-nav mr-auto">
         {% if g.user.is_authenticated %}
             <li class="nav-item {% if current_link == "queue" %}active{% endif %}">
-                <a class="nav-link" href="/queue">Queue</a>
+                <a class="nav-link" href="{{ url_for('.queue') }}">Queue</a>
             </li>
             <li class="nav-item {% if current_link == "customers" %}active{% endif %}">
-                <a class="nav-link" href="/customers">Customers</a>
+                <a class="nav-link" href="{{ url_for('.customers') }}">Customers</a>
             </li>
             <li class="nav-item {% if current_link == "templates" %}active{% endif %}">
-                <a class="nav-link" href="/templates">Templates</a>
+                <a class="nav-link" href="{{ url_for('.templates') }}">Templates</a>
             </li>
             {% if g.role.is_admin %}
             <li class="nav-item {% if current_link == "groups" %}active{% endif %}">
-                <a class="nav-link" href="/groups">Groups</a>
+                <a class="nav-link" href="{{ url_for('.groups') }}">Groups</a>
             </li>
             <li class="nav-item {% if current_link == "subgroups" %}active{% endif %}">
-                <a class="nav-link" href"/subgroups">Subgroups</a>
+                <a class="nav-link" href="{{ url_for('.subgroups') }}">Subgroups</a>
             </li>
             <li class="nav-item {% if current_link == "users" %}active{% endif %}">
-                <a class="nav-link" href="/users">Users</a>
+                <a class="nav-link" href="{{ url_for('.users') }}">Users</a>
             </li>
             <li class="nav-item {% if current_link == "roles" %}active{% endif %}">
-                <a class="nav-link" href="/roles">Roles</a>
+                <a class="nav-link" href="{{ url_for('.roles') }}">Roles</a>
             </li>
             {% endif %}
         {% endif %}
@@ -34,7 +34,7 @@
         <ul class="navbar-nav ml-auto">
             {% if g.user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link {% if current_link == "profile" %}active{% endif %}" href="/profile">{{ g.user.username }}#{% if g.subgroup == None %}{{ g.group.name }}{% else %}{{ g.subgroup.name }}{% endif %}</a>
+                <a class="nav-link {% if current_link == "profile" %}active{% endif %}" href="{{ url_for('.profile') }}">{{ g.user.username }}#{% if g.subgroup == None %}{{ g.group.name }}{% else %}{{ g.subgroup.name }}{% endif %}</a>
             </li>
             {% endif %}
             <li class="nav-item">
