@@ -1,9 +1,10 @@
 from datetime import datetime
+from pprint import pprint
 
 from flask_login import UserMixin
 from nacl.pwhash import scrypt
 from pony.orm import (LongUnicode, Optional, PrimaryKey, Required, Set, commit,
-                      db_session)
+                      db_session, select)
 
 from mailer.extensions import db
 
@@ -241,3 +242,18 @@ class Template(db.Entity):
     added_on = Required(datetime)
     expires_on = Required(datetime)
     queue_items = Set(Queue)
+
+    @classmethod
+    def get_all(cls):
+        res = {}
+        for template in Template.select(lambda t: t.tid > 0):
+            res[template.tid] = {
+                'tid': template.tid,
+                'name': template.name,
+                'subject': template.subject,
+                'body': template.body,
+                'added_by': template.added_by,
+                'added_on': template.added_on,
+                'expires_on': template.expires_on
+            }
+        return res

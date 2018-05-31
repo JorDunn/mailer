@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from functools import wraps
 from time import time
+from pprint import pprint
 
 from flask import (Blueprint, abort, current_app, flash, g, redirect,
                    render_template, request, send_from_directory, url_for)
@@ -130,8 +131,11 @@ def customers():
 
 @app_routes.route('/templates', methods=['GET'])
 @login_required
+@db_session
 def templates():
-    return render_template('templates.j2', title='Templates', current_link='templates', templates={})
+    templates = Template.get_all()
+    pprint(templates)
+    return render_template('templates.j2', title='Templates', current_link='templates', templates=templates)
 
 
 @app_routes.route('/templates/add', methods=['GET', 'POST'])
@@ -142,10 +146,11 @@ def templates_add():
         if request.method == 'GET':
             return render_template('templates_add.j2', title='Add template', current_link='templates')
         elif request.method == 'POST':
+            pprint(request.form)
             Template(name=request.form.get('name'),
                      subject=request.form.get('subject'),
                      body=request.form.get('body'),
-                     added_by=request.form.get('username'),
+                     added_by=request.form.get('added_by'),
                      added_on=datetime.now(),
                      expires_on=request.form.get('expires'))
             commit()

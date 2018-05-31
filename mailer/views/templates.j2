@@ -34,14 +34,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for tpl in template_list %}
+            {% for tpl in templates.values() %}
             <tr>
-                <td><a href="/templates/edit/{{ tpl.template_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                <th scope="row"><a href="/templates/view/{{ tpl.template_id }}">{{ tpl.name }}</a></th>
-                <td>{{ tpl.added }}</td>
-                <td>{% if tpl.expires == None %}Never{% else %}{{ tpl.expires }}{% endif %}</td>
-                <td>{{ tpl.author }}</td>
-                <td><a href="/templates/remove/{{ tpl.template_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="/templates/edit/{{ tpl.tis }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <th scope="row"><a href="/templates/view/{{ tpl.tid }}">{{ tpl.name }}</a></th>
+                <td>{{ tpl.added_on }}</td>
+                <td>{% if tpl.expires_on == None %}Never{% else %}{{ tpl.expires_on }}{% endif %}</td>
+                <td>{{ tpl.added_by }}</td>
+                <td><a href="/templates/remove/{{ tpl.tid }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
             {% endfor %}
         </tbody>
