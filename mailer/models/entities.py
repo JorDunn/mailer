@@ -211,7 +211,7 @@ class Customer(db.Entity):
     first_name = Required(str)
     last_name = Required(str)
     email = Required(str, unique=True)
-    emailed_on = Required(datetime)
+    emailed_on = Optional(datetime, nullable=True)
     added_on = Required(datetime)
     queue_item = Optional('Queue')
 
@@ -257,7 +257,7 @@ class Template(db.Entity):
     body = Required(LongUnicode)
     added_by = Required(User)
     added_on = Required(datetime)
-    expires_on = Required(datetime)
+    expires_on = Required(datetime, nullable=True)
     queue_items = Set(Queue)
 
     @classmethod

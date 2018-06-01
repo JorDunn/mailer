@@ -132,6 +132,23 @@ def customers():
     return render_template('customers.j2', title='Customers', current_link='customers', customers=customers)
 
 
+@app_routes.route('/customers/add', methods=['GET', 'POST'])
+@login_required
+@db_session
+def customers_add():
+    if request.method == 'GET':
+        return render_template('customers_add.j2', title='Add a customer', current_link='customers')
+    elif request.method == 'POST':
+        pprint(request.form)
+        current_time = datetime.now()
+        Customer(first_name=request.form.get('first_name'),
+                 last_name=request.form.get('last_name'),
+                 email=request.form.get('email'),
+                 added_on=current_time)
+        commit()
+        return redirect(url_for('.customers'))
+
+
 @app_routes.route('/templates', methods=['GET'])
 @login_required
 @db_session
