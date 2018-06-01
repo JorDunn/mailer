@@ -128,7 +128,6 @@ def queue_add():
 @db_session
 def customers():
     customers = Customer.get_all()
-    pprint(customers)
     return render_template('customers.j2', title='Customers', current_link='customers', customers=customers)
 
 
@@ -137,7 +136,7 @@ def customers():
 @db_session
 def customers_add():
     if request.method == 'GET':
-        return render_template('customers_add.j2', title='Add a customer', current_link='customers')
+        return render_template('customers_add.j2', title='Add a Customer', current_link='customers')
     elif request.method == 'POST':
         pprint(request.form)
         current_time = datetime.now()
@@ -145,6 +144,32 @@ def customers_add():
                  last_name=request.form.get('last_name'),
                  email=request.form.get('email'),
                  added_on=current_time)
+        commit()
+        return redirect(url_for('.customers'))
+
+
+@app_routes.route('/customers/<int:customer_id>/edit', methods=['GET', 'POST'])
+@login_required
+@db_session
+def customers_edit(customer_id):
+    if g.role.can_edit_customers:
+        if request.method == 'GET':
+            return render_template('customers_edit.j2', title='Edit Customer', current_link='customers', customer=Customer.get(cid=customer_id))
+        elif request.method == 'POST':
+            customer = Customer.get(cid=customer_id)
+            customer.first_name = request.form.get('first_name')
+            customer.last_name = request.form.get('last_name')
+            customer.email = request.form.get('email')
+            commit()
+            return redirect(url_for('.customers'))
+
+
+@app_routes.route('/customers/<int:customer_id>/remove', methods=['GET'])
+@login_required
+@db_session
+def customers_remove(customer_id):
+    if g.role.can_delete_customers:
+        Customer.get(cid=customer_id).delete()
         commit()
         return redirect(url_for('.customers'))
 
@@ -174,6 +199,33 @@ def templates_add():
                      expires_on=request.form.get('expires'))
             commit()
             return redirect(url_for('.templates'))
+
+
+@app_routes.route('/templates/<int:template_id>/edit', methods=['GET', 'POST'])
+@login_required
+@db_session
+def templates_edit(template_id):
+    if g.role.can_edit_templates:
+        if request.method == 'GET':
+            return render_template('templates_edit.j2', title='Edit Template', current_link='templates', template=Template.get(tid=template_id))
+        elif request.method == 'POST':
+            template = Template.get(tid=template_id)
+            template.name = request.form.get('name')
+            template.subject = request.form.get('subject')
+            template.body = request.form.get('body')
+            template.expires_on = request.form.get('expires')
+            commit()
+            return redirect(url_for('.templates'))
+
+
+@app_routes.route('/templates/<int:template_id>/remove', methods=['GET'])
+@login_required
+@db_session
+def templates_remove(template_id):
+    if g.role.can_delete_templates:
+        Template.get(tid=template_id).delete()
+        commit()
+        return redirect(url_for('.templates'))
 
 
 @app_routes.route('/groups', methods=['GET'])

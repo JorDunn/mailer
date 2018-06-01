@@ -37,14 +37,14 @@
             {% for template in templates.values() %}
             <tr>
                 {% if g.role.can_edit_templates %}
-                <td><a href="/templates/edit/{{ template.tid }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <td><a href="{{ url_for('.templates_edit', template_id=template.tid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 {% endif %}
-                <th scope="row"><a href="/templates/view/{{ template.tid }}">{{ template.name }}</a></th>
+                <th scope="row"><a href="/templates/{{ template.tid }}/view">{{ template.name }}</a></th>
                 <td>{{ template.added_on }}</td>
                 <td>{{ template.added_by }}</td>
                 <td>{% if template.expires_on == None %}Never{% else %}{{ template.expires_on }}{% endif %}</td>                
                 {% if g.role.can_delete_templates %}
-                <td><a href="/templates/remove/{{ template.tid }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="{{ url_for('.templates_remove', template_id=template.tid) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
                 {% endif %}
             </tr>
             {% endfor %}

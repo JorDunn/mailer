@@ -13,27 +13,29 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title text-center">Edit Template</h5>
-            <form action="/templates/edit/do?token={{ token }}" method="post">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" value="{{ template.name}}">
-                    <small id="titleHelp" class="form-text text-muted">This will be the subject of the email.</small>
+            <form action="{{ url_for('.templates_edit', template_id=template.tid) }}" method="post">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ template.name }}">
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="subject">Subject</label>
+                        <input type="text" name="subject" class="form-control" value="{{ template.subject }}">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="base">Template Base</label>
-                    <input type="text" name="base" class="form-control" value="base.mjml">
-                    <small id="baseHelp" class="form-text text-muted">This is the base template filename located in the mjml folder.</small>
+                    <label for="body">Template Text</label>
+                    <textarea rows="10" name="body" class="form-control">{{ template.body }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="template">Template Code</label>
-                    <textarea rows="10" name="template" class="form-control">{{ template.body }}</textarea>
-                    <small id="templateHelp" class="form-text text-muted">This will be the body of the email.</small>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="expires">Expires on</label>
+                        <input type="date" name="expires" class="form-control" value="{{ template.expires_on.strftime('%Y-%m-%d') }}">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="expires">Expires on </label>
-                    <input type="date" name="expires" class="form-control" value="{% if template.expires != None %}{{ template.expires.strftime("%Y-%m-%d") }}{% endif %}">
-                </div>
-                <input type="hidden" name="template_id" value="{{ template.template_id }}">
+                <input type="hidden" name="added_by" value="{{ g.user.uid }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button class="btn btn-primary float-right" type="submit"><span class="oi oi-loop"></span>&nbsp;&nbsp;Update</button>
             </form>
         </div>
