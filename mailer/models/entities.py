@@ -215,6 +215,23 @@ class Customer(db.Entity):
     added_on = Required(datetime)
     queue_item = Optional('Queue')
 
+    @classmethod
+    def get_all(cls):
+        data = {}
+        counter = 0
+        for customer in Customer.select(lambda c: c.cid > 0):
+            data[counter] = {
+                'cid': customer.cid,
+                'first_name': customer.first_name,
+                'last_name': customer.last_name,
+                'email': customer.email,
+                'emailed_on': customer.emailed_on,
+                'added_on': customer.added_on,
+                'queue_item': customer.queue_item
+            }
+            counter += 1
+        return data
+
 
 class Queue(db.Entity):
 
@@ -245,15 +262,15 @@ class Template(db.Entity):
 
     @classmethod
     def get_all(cls):
-        res = {}
+        data = {}
         for template in Template.select(lambda t: t.tid > 0):
-            res[template.tid] = {
+            data[template.tid] = {
                 'tid': template.tid,
                 'name': template.name,
                 'subject': template.subject,
                 'body': template.body,
-                'added_by': template.added_by,
+                'added_by': template.added_by.username,
                 'added_on': template.added_on,
                 'expires_on': template.expires_on
             }
-        return res
+        return data

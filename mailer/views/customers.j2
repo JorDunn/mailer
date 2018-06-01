@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for customer in customers %}
+            {% for customer in customers.values() %}
             <tr>
                 <td><a href="{{ url_for('mailer.routes.customers_edit', customer_id=customer.customer_id, token=token) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ customer.email }}</th>

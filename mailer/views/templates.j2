@@ -28,25 +28,29 @@
                 <th scope="col"></th>
                 <th scope="col">Name</th>
                 <th scope="col">Date added</th>
-                <th scope="col">Expires on</th>
                 <th scope="col">Added by</th>
+                <th scope="col">Expires on</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            {% for tpl in templates.values() %}
+            {% for template in templates.values() %}
             <tr>
-                <td><a href="/templates/edit/{{ tpl.tis }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                <th scope="row"><a href="/templates/view/{{ tpl.tid }}">{{ tpl.name }}</a></th>
-                <td>{{ tpl.added_on }}</td>
-                <td>{% if tpl.expires_on == None %}Never{% else %}{{ tpl.expires_on }}{% endif %}</td>
-                <td>{{ tpl.added_by }}</td>
-                <td><a href="/templates/remove/{{ tpl.tid }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                {% if g.role.can_edit_templates %}
+                <td><a href="/templates/edit/{{ template.tid }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                {% endif %}
+                <th scope="row"><a href="/templates/view/{{ template.tid }}">{{ template.name }}</a></th>
+                <td>{{ template.added_on }}</td>
+                <td>{{ template.added_by }}</td>
+                <td>{% if template.expires_on == None %}Never{% else %}{{ template.expires_on }}{% endif %}</td>                
+                {% if g.role.can_delete_templates %}
+                <td><a href="/templates/remove/{{ template.tid }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% if template_list|length == 0 %}
+    {% if templates|length == 0 %}
         <h4 class="text-center">No templates have been created.</h4>
     {% endif %}
     </div>

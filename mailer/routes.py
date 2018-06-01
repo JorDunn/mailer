@@ -125,8 +125,11 @@ def queue_add():
 
 @app_routes.route('/customers', methods=['GET'])
 @login_required
+@db_session
 def customers():
-    return render_template('customers.j2', title='Customers', current_link='customers', customers={})
+    customers = Customer.get_all()
+    pprint(customers)
+    return render_template('customers.j2', title='Customers', current_link='customers', customers=customers)
 
 
 @app_routes.route('/templates', methods=['GET'])
@@ -134,7 +137,6 @@ def customers():
 @db_session
 def templates():
     templates = Template.get_all()
-    pprint(templates)
     return render_template('templates.j2', title='Templates', current_link='templates', templates=templates)
 
 
