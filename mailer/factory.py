@@ -23,13 +23,16 @@ def create_app():
     register_blueprints(app)
     register_errorhandlers(app)
 
-    db.bind(provider=Config.PONY['provider'],
-            user=Config.PONY['user'],
-            password=Config.PONY['password'],
-            db=Config.PONY['dbname'],
-            host=Config.PONY['host'],
-            port=Config.PONY['port'])
-    db.generate_mapping(create_tables=True)
+    try:
+        db.bind(provider=Config.PONY['provider'],
+                user=Config.PONY['user'],
+                password=Config.PONY['password'],
+                db=Config.PONY['dbname'],
+                host=Config.PONY['host'],
+                port=Config.PONY['port'])
+        db.generate_mapping(create_tables=True)
+    except Exception as e:
+        print(e)
 
     installer()
 

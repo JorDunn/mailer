@@ -1,0 +1,4 @@
+[
+  "mailer/tests/test_base.py::test_login_logout",
+  "mailer/tests/test_base.py::test_index"
+]

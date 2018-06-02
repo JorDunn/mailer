@@ -12,6 +12,7 @@ python-jose = "*"
 gunicorn = "*"
 setproctitle = "*"
 mysqlclient = "*"
+tox = "*"
 
 [dev-packages]
 pylint = "*"
