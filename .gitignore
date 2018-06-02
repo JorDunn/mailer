@@ -6,7 +6,6 @@ mailer/mjml/*.html
 mailer/mjml/*.mjml
 .DS_Store
 log/
-.pytest_cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -55,6 +54,7 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+.pytest_cache/
 
 # Translations
 *.mo

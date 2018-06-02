@@ -233,7 +233,7 @@ def templates_remove(template_id):
 @db_session
 @admin_required
 def groups():
-    return render_template('groups.j2', title='Group', current_link='groups', groups={})
+    return render_template('groups.j2', title='Groups', current_link='groups', groups={})
 
 
 @app_routes.route('/subgroups', methods=['GET'])
@@ -241,7 +241,7 @@ def groups():
 @db_session
 @admin_required
 def subgroups():
-    pass
+    return render_template('subgroups.j2', title='Subgroups', current_link='subgroups', subgroups={})
 
 
 @app_routes.route('/roles', methods=['GET'])
@@ -249,7 +249,7 @@ def subgroups():
 @db_session
 @admin_required
 def roles():
-    pass
+    return render_template('roles.j2', title='Roles', current_link='roles', roles={})
 
 
 @app_routes.route('/users', methods=['GET'])
@@ -257,10 +257,10 @@ def roles():
 @db_session
 @admin_required
 def users():
-    pass
+    return render_template('users.j2', title='Users', current_link='users', users={})
 
 
 @app_routes.route('/profile', methods=['GET'])
 @login_required
 def profile():
-    pass
+    return render_template('profile.j2', title="{0}'s Profile".format(g.user.username), current_link='profile', user={})
