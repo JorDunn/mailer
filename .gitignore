@@ -6,6 +6,7 @@ mailer/mjml/*.html
 mailer/mjml/*.mjml
 .DS_Store
 log/
+.pytest_cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
