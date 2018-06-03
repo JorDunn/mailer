@@ -1,7 +1,7 @@
 from getpass import getpass
 
 from flask import Flask, render_template
-from pony.orm import commit, db_session, commit
+from pony.orm import commit, db_session
 
 from mailer.config import Config
 from mailer.extensions import csrf_protect, db, login_manager
