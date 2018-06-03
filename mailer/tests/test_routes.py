@@ -1,7 +1,11 @@
-from mailer.factory import create_app
-from mailer.extensions import db
-from mailer.models import User, Role, Group, Subgroup, Template, Customer, Queue
+from datetime import datetime
+
 import pytest
+
+from mailer.extensions import db
+from mailer.factory import create_app
+from mailer.models import (Customer, Group, Queue, Role, Subgroup, Template,
+                           User)
 
 
 @pytest.fixture
@@ -13,10 +17,27 @@ def app():
 
 
 def setUp():
-    Role()
-    Group()
-    Subgroup()
-    User(username='testuser', password='somepassword')
+    group = Group(name='TestAdminGroup', email_mask='tuser@example.com', email_username='tuser@example.com',
+                  email_password='somepassword', email_host='secure.example.com', email_port=465)
+    subgroup = Subgroup(gid=Group, name='TestAdminSubgroup')
+    role = Role(name='TestAdmin', is_admin=True,
+                is_group_admin=True, can_add_group_admin=True,
+                can_remove_group_admin=True, is_subgroup_admin=True,
+                can_add_subgroup_admin=True, can_remove_subgroup_admin=True,
+                can_add_templates=True, can_edit_templates=True,
+                can_delete_templates=True, can_add_users=True,
+                can_edit_users=True, can_delete_users=True,
+                can_add_groups=True, can_edit_groups=True,
+                can_delete_groups=True, can_add_subgroups=True,
+                can_edit_subgroups=True, can_delete_subgroups=True,
+                can_add_queue_items=True, can_edit_queue_items=True,
+                can_delete_queue_items=True, can_add_customers=True,
+                can_edit_customers=True, can_delete_customers=True)
+    User(first_name='Test', last_name='User',
+         email='tuser@example.com', username='testuser',
+         password='somepassword', role=role,
+         group=group, subgroup=subgroup,
+         creation_date=datetime.now())
     Template()
     Customer()
     Queue()
@@ -165,4 +186,12 @@ def test_users_remove(app):
 
 
 def test_users_edit(app):
+    pass
+
+
+def test_profile(app):
+    pass
+
+
+def test_profile_edit(app):
     pass

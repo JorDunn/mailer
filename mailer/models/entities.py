@@ -4,7 +4,7 @@ from pprint import pprint
 from flask_login import UserMixin
 from nacl.pwhash import scrypt
 from pony.orm import (LongUnicode, Optional, PrimaryKey, Required, Set, commit,
-                      db_session, select)
+                      db_session)
 
 from mailer.extensions import db
 
