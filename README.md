@@ -1,6 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0591b76f51d54a39b725ea2d296adc9b)](https://www.codacy.com/app/JorDunn/mailer?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JorDunn/mailer&amp;utm_campaign=Badge_Grade)
-
-[![GitHub license](https://img.shields.io/github/license/JorDunn/mailer.svg)](https://github.com/JorDunn/mailer/blob/master/LICENSE)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0591b76f51d54a39b725ea2d296adc9b)](https://www.codacy.com/app/JorDunn/mailer?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JorDunn/mailer&amp;utm_campaign=Badge_Grade) [![GitHub license](https://img.shields.io/github/license/JorDunn/mailer.svg)](https://github.com/JorDunn/mailer/blob/master/LICENSE)
 
 
 # Mailer
