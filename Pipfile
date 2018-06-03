@@ -12,6 +12,7 @@ gunicorn = "*"
 setproctitle = "*"
 mysqlclient = "*"
 codecov = "*"
+detox = "*"
 
 [dev-packages]
 pylint = "*"

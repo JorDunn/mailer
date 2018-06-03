@@ -59,7 +59,7 @@ def register_errorhandlers(app):
 
 def installer():
     with db_session:
-        """This is executed the first time mailer is run to setup an admin account"""
+        # This is executed the first time mailer is run to setup an admin account
         from mailer.models import Installer
 
         if Installer.exists(installed=True) is False:

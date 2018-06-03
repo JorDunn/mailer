@@ -263,4 +263,4 @@ def users():
 @app_routes.route('/profile', methods=['GET'])
 @login_required
 def profile():
-    return render_template('profile.j2', title="{0}'s Profile".format(g.user.username), current_link='profile', user={})
+    return render_template('profile.j2', title=f"{g.user.username}'s Profile", current_link='profile', user={})
