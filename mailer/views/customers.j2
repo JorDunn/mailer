@@ -32,8 +32,8 @@
                 <td><a href="{{ url_for('mailer.routes.customers_edit', customer_id=customer.cid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ customer.email }}</th>
                 <td>{{ customer.first_name }} {{ customer.last_name }}</td>
-                <td>{{ customer.added_on }}</td>
-                <td>{{ customer.emailed_on }}</td>
+                <td>{{ customer.added_on.strftime('%m-%d-%Y') }}</td>
+                <td>{% if customer.emailed_on == None %}Never{% else %}{{ customer.emailed_on.strftime('%m-%d-%Y') }}{% endif %}</td>
                 <td><a href="{{ url_for('mailer.routes.customers_remove', customer_id=customer.cid) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
             {% endfor %}

@@ -40,9 +40,9 @@
                 <td><a href="{{ url_for('.templates_edit', template_id=template.tid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 {% endif %}
                 <th scope="row"><a href="/templates/{{ template.tid }}/view">{{ template.name }}</a></th>
-                <td>{{ template.added_on }}</td>
+                <td>{{ template.added_on.strftime('%m-%d-%Y') }}</td>
                 <td>{{ template.added_by }}</td>
-                <td>{% if template.expires_on == None %}Never{% else %}{{ template.expires_on }}{% endif %}</td>                
+                <td>{% if template.expires_on == None %}Never{% else %}{{ template.expires_on.strftime('%m-%d-%Y') }}{% endif %}</td>                
                 {% if g.role.can_delete_templates %}
                 <td><a href="{{ url_for('.templates_remove', template_id=template.tid) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
                 {% endif %}

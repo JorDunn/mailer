@@ -91,7 +91,6 @@ def logout():
 @login_required
 @db_session
 def index():
-    # return redirect(url_for('.queue'))
     return render_template('index.j2', title="Home", current_link="home")
 
 
@@ -100,7 +99,6 @@ def index():
 @db_session
 def queue():
     queue = Queue.get_items()
-    pprint(queue)
     return render_template('queue.j2', title='Queue', current_link='queue', queue=queue)
 
 
@@ -225,13 +223,19 @@ def templates_add():
         if request.method == 'GET':
             return render_template('templates_add.j2', title='Add template', current_link='templates')
         elif request.method == 'POST':
-            pprint(request.form)
-            Template(name=request.form.get('name'),
-                     subject=request.form.get('subject'),
-                     body=request.form.get('body'),
-                     added_by=request.form.get('added_by'),
-                     added_on=datetime.now(),
-                     expires_on=request.form.get('expires', None))
+            if request.form['expires']:
+                Template(name=request.form.get('name'),
+                         subject=request.form.get('subject'),
+                         body=request.form.get('body'),
+                         added_by=request.form.get('added_by'),
+                         added_on=datetime.now(),
+                         expires_on=request.form.get('expires'))
+            else:
+                Template(name=request.form.get('name'),
+                         subject=request.form.get('subject'),
+                         body=request.form.get('body'),
+                         added_by=request.form.get('added_by'),
+                         added_on=datetime.now())
             commit()
             return redirect(url_for('.templates'))
 

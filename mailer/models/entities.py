@@ -274,7 +274,7 @@ class Template(db.Entity):
     body = Required(LongUnicode)
     added_by = Required(User)
     added_on = Required(datetime)
-    expires_on = Required(datetime, nullable=True)
+    expires_on = Optional(datetime, nullable=True)
     queue_items = Set(Queue)
 
     @classmethod

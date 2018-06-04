@@ -33,4 +33,5 @@ coverage = "*"
 python_version = "3.6"
 
 [scripts]
+mjml = "mjml -r mailer/mjml/*.mjml -o mailer/mjml"
 postman = "python postman.py"
