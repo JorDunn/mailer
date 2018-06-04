@@ -99,7 +99,8 @@ def index():
 @login_required
 @db_session
 def queue():
-    queue = Queue.get_all()
+    queue = Queue.get_items()
+    pprint(queue)
     return render_template('queue.j2', title='Queue', current_link='queue', queue=queue)
 
 
@@ -108,19 +109,53 @@ def queue():
 @db_session
 def queue_add():
     if request.method == 'GET':
-        return render_template('queue_add.j2', title='Add to queue', current_link='queue')
+        if g.role.can_add_queue_items:
+            templates = Template.get_all()
+            return render_template('queue_add.j2', title='Add to queue', current_link='queue', templates=templates)
+        else:
+            return redirect(url_for('.queue'))
     elif request.method == 'POST':
         if g.role.can_add_queue_items:
-            template = Template.get(tid=request.form.get('template_id', 0))
-            user = g.user
-            customer = Customer(first_name=request.form.get('first_name'),
-                                last_name=request.form.get('last_name'),
-                                email=request.form.get('email'),
-                                added_on=datetime.now())
-            commit()
+            template = Template.get(tid=request.form.get('template'))
+            user = User.get(uid=g.user.uid)
+            if Customer.exists(email=request.form.get('email')):
+                customer = Customer.get(email=request.form.get('email'))
+            else:
+                customer = Customer(first_name=request.form.get('first_name'),
+                                    last_name=request.form.get('last_name'),
+                                    email=request.form.get('email'),
+                                    added_on=datetime.now())
+                commit()
             queue_item = Queue(customer=customer, user=user, template=template)
             customer.queue_item = queue_item
+            commit()
             return redirect(url_for('.queue'))
+        else:
+            return redirect(url_for('.queue'))
+
+
+@app_routes.route('/queue/<int:customer_id>/add', methods=['GET'])
+@login_required
+@db_session
+def queue_add_customer(customer_id):
+    if g.role.can_add_queue_items:
+        customer = Customer.get(cid=customer_id)
+        templates = Template.get_all()
+        return render_template('queue_add_customer.j2', title='Add Customer to Queue', current_link='queue', customer=customer, templates=templates)
+    else:
+        return redirect(url_for('.customers'))
+
+
+@app_routes.route('/queue/<int:queue_id>/remove', methods=['GET'])
+@login_required
+@db_session
+def queue_remove(queue_id):
+    if g.role.can_delete_queue_items:
+        Queue.get(qid=queue_id).delete()
+        commit()
+        return redirect(url_for('.queue'))
+    else:
+        return redirect(url_for('.queue'))
 
 
 @app_routes.route('/customers', methods=['GET'])
@@ -196,7 +231,7 @@ def templates_add():
                      body=request.form.get('body'),
                      added_by=request.form.get('added_by'),
                      added_on=datetime.now(),
-                     expires_on=request.form.get('expires'))
+                     expires_on=request.form.get('expires', None))
             commit()
             return redirect(url_for('.templates'))
 

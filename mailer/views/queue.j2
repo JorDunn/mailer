@@ -19,18 +19,18 @@
                     <th scope="col"></th>
                     <th scope="col">Email</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Phone</th>
+                    <th scope="col">Template</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                {% for items in queue %}
+                {% for item in queue.values() %}
                     <tr>
-                        <td><a href="customers/edit/{{ items.customer_id }}?token={{ token }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                        <th scope="row">{{ items.email }}</th>
-                        <td>{{ items.first_name }} {{ items.last_name }}</td>
-                        <td>{{ items.phone }}</td>
-                        <td><a href="/queue/remove/{{ items.queue_id }}?token={{ token }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                        <td><a href="{{ url_for('.customers_edit', customer_id=item.cid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                        <th scope="row">{{ item.email }}</th>
+                        <td>{{ item.first_name }} {{ item.last_name }}</td>
+                        <td>{{ item.template }}</td>
+                        <td><a href="{{ url_for('.queue_remove', queue_id=item.qid) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -245,6 +245,24 @@ class Queue(db.Entity):
     def get_all(cls):
         return Queue.select().prefetch()
 
+    @classmethod
+    def get_items(cls):
+        data = {}
+        counter = 0
+        for item in Queue.select(lambda q: q.qid > 0):
+            for customer in Customer.select(lambda c: c.cid == item.customer.cid):
+                template = Template.get(tid=item.template.tid)
+                data[counter] = {
+                    'qid': item.qid,
+                    'cid': customer.cid,
+                    'first_name': customer.first_name,
+                    'last_name': customer.last_name,
+                    'email': customer.email,
+                    'template': template.name
+                }
+            counter += 1
+        return data
+
 
 class Template(db.Entity):
 

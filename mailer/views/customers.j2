@@ -17,6 +17,7 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col"></th>
+                <th scope="col"></th>
                 <th scope="col">Email</th>
                 <th scope="col">Name</th>
                 <th scope="col">Added on</th>
@@ -27,6 +28,7 @@
         <tbody>
             {% for customer in customers.values() %}
             <tr>
+                <td><a href="{{ url_for('mailer.routes.queue_add_customer', customer_id=customer.cid) }}"><span class="oi oi-plus"></span></a></td>
                 <td><a href="{{ url_for('mailer.routes.customers_edit', customer_id=customer.cid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ customer.email }}</th>
                 <td>{{ customer.first_name }} {{ customer.last_name }}</td>
