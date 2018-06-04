@@ -4,6 +4,15 @@
 <br/><br/>
 <div class="col-lg-10 offset-lg-1">
     <div class="col-lg-12">
+        {% with messages = get_flashed_messages(category_filter=['queue_error']) %}
+        <div class="row">
+        {% for message in messages %}
+            <div class="col-sm-12 alert alert-warning" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+        {% endwith %}
         <div class="row">
             <div class="col-lg-6">
                 <a href="/queue/add" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add to Queue</a>
@@ -26,7 +35,7 @@
             <tbody>
                 {% for item in queue.values() %}
                     <tr>
-                        <td><a href="{{ url_for('.customers_edit', customer_id=item.cid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                        <td><a href="{{ url_for('.queue_edit', customer_id=item.cid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                         <th scope="row">{{ item.email }}</th>
                         <td>{{ item.first_name }} {{ item.last_name }}</td>
                         <td>{{ item.template }}</td>

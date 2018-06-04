@@ -118,6 +118,9 @@ def queue_add():
             user = User.get(uid=g.user.uid)
             if Customer.exists(email=request.form.get('email')):
                 customer = Customer.get(email=request.form.get('email'))
+                if Queue.exists(customer=customer):
+                    flash('Customer is already in the queue', 'queue_error')
+                    return redirect(url_for('.queue'))
             else:
                 customer = Customer(first_name=request.form.get('first_name'),
                                     last_name=request.form.get('last_name'),
