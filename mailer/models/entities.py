@@ -67,6 +67,10 @@ class User(db.Entity, UserMixin):
             return None
 
     @classmethod
+    def get_all(cls):
+        return User.select().prefetch()
+
+    @classmethod
     def authenticate(cls, username, password):
         if User.exists(username=username):
             user = User.get(username=username)
@@ -132,7 +136,7 @@ class Role(db.Entity):
     can_delete_customers = Required(bool)
 
     @classmethod
-    def get_permissions(self, rid):
+    def get_permissions(cls, rid):
         role = None
         roles = Role.select(lambda r: rid == rid).prefetch()
         for each in roles:
@@ -140,8 +144,12 @@ class Role(db.Entity):
         return role
 
     @classmethod
-    def update_permissions(self, user_id, **kwargs):
+    def update_permissions(cls, user_id, **kwargs):
         pass
+
+    @classmethod
+    def get_all(cls):
+        return Role.select().prefetch()
 
 
 class Group(db.Entity):
@@ -176,6 +184,18 @@ class Group(db.Entity):
             group = each
         return group
 
+    @classmethod
+    def get_all(cls):
+        data = {}
+        counter = 0
+        for group in Group.select(lambda g: g.gid > 0):
+            data[counter] = {
+                'gid': group.gid,
+                'name': group.name,
+            }
+            counter += 1
+        return data
+
 
 class Subgroup(db.Entity):
 
@@ -193,6 +213,10 @@ class Subgroup(db.Entity):
 
     def get_id(self):
         return self.sgid
+
+    @classmethod
+    def get_all(cls):
+        return Subgroup.select().prefetch()
 
     def __repr__(self):
         return '<Subgroup {}>'.format(self.name)

@@ -18,16 +18,22 @@
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Name</th>
+                <th scope="col">Subgroups</th>
+                <th scope="col">Users</th>
+                <th scope="col">Email Settings</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            {% for group in groups %}
+            {% for group in groups.values() %}
             {% if group.name != "Null" %}
             <tr>
-                <td><a href="{{ url_for('mailer.routes.groups', group_id=group.gid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <td><a href="{{ url_for('mailer.routes.groups_edit', group_id=group.gid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                 <th scope="row">{{ group.name }}</th>
-                <td><a href="{{ url_for('mailer.routes.groups', group_id=group.gid) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="{{ url_for('mailer.routes.groups_subgroups', group_id=group.gid) }}">View</a></td>
+                <td><a href="{{ url_for('mailer.routes.groups_users', group_id=group.gid) }}">View</a></td>
+                <td><a href="{{ url_for('mailer.routes.groups_email', group_id=group.gid) }}">View</a></td>
+                <td><a href="{{ url_for('mailer.routes.groups_remove', group_id=group.gid) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
             {% endif %}
             {% endfor %}

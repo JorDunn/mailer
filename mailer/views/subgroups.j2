@@ -5,8 +5,11 @@
 <div class="col-lg-10 offset-lg-1">
     <div class="col-lg-12">
     <div class="row">
-            <div class="col-lg-12 text-right">
-                <h2>Franchises</h2>
+            <div class="col-lg-6">
+                <a href="{{ url_for('.subgroups') }}" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Subgroup</a>
+            </div>
+            <div class="col-lg-6 text-right">
+                <h2>Subgroups</h2>
             </div>
         </div>
     <br/><br/>
@@ -19,26 +22,19 @@
             </tr>
         </thead>
         <tbody>
+            {% for subgroup in subgroups %}
+            {% if subgroup.name != "Null" %}
             <tr>
-                <form action="{{ url_for('mailer.admin_routes.franchises_add_do', token=token) }}" method="post" class="form">
-                    <td></td>
-                    <th scope="row"><input type="input" name="name" placeholder="Franchise Name" class="form-control"></th>
-                    <td><button type="submit" class="btn btn-primary"><span class="oi oi-plus"></span>&nbsp;&nbsp;Add Franchise</button></td>
-                </form>
-            </tr>
-            {% for franchise in franchises %}
-            {% if franchise.name != "Null" %}
-            <tr>
-                <td><a href="{{ url_for('mailer.admin_routes.franchises_edit', franchise_id=franchise.franchise_id, token=token) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
-                <th scope="row">{{ franchise.name }}</th>
-                <td><a href="{{ url_for('mailer.admin_routes.franchises_remove', franchise_id=franchise.franchise_id, token=token) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
+                <td><a href="{{ url_for('mailer.admin_routes.subgroups', subgroup_id=subgroup.sid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                <th scope="row">{{ subgroups.name }}</th>
+                <td><a href="{{ url_for('mailer.admin_routes.subgroups', subgroup_id=subgroup.sid) }}" style="color:red"><span class="oi oi-delete"></span></a></td>
             </tr>
             {% endif %}
             {% endfor %}
         </tbody>
     </table>
-    {% if franchises|length == 1 %}
-        <h4 class="text-center">No franchises have been added.</h4>
+    {% if subgroups|length <= 1 %}
+        <h4 class="text-center">No subgroups have been added.</h4>
     {% endif %}
     </div>
 </div>

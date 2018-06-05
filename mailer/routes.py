@@ -291,7 +291,48 @@ def templates_remove(template_id):
 @db_session
 @admin_required
 def groups():
-    return render_template('groups.j2', title='Groups', current_link='groups', groups={})
+    groups = Group.get_all()
+    return render_template('groups.j2', title='Groups', current_link='groups', groups=groups)
+
+
+@app_routes.route('/groups/<int:group_id>', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def groups_edit(group_id):
+    pass
+
+
+@app_routes.route('/groups/<int:group_id>', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def groups_remove(group_id):
+    pass
+
+
+@app_routes.route('/groups/<int:group_id>/subgroups', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def groups_subgroups(group_id):
+    pass
+
+
+@app_routes.route('/groups/<int:group_id>/users', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def groups_users(group_id):
+    pass
+
+
+@app_routes.route('/groups/<int:group_id>/email', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def groups_email(group_id):
+    pass
 
 
 @app_routes.route('/subgroups', methods=['GET'])
@@ -299,7 +340,8 @@ def groups():
 @db_session
 @admin_required
 def subgroups():
-    return render_template('subgroups.j2', title='Subgroups', current_link='subgroups', subgroups={})
+    subgroups = Subgroup.get_all()
+    return render_template('subgroups.j2', title='Subgroups', current_link='subgroups', subgroups=subgroups)
 
 
 @app_routes.route('/roles', methods=['GET'])
@@ -307,7 +349,24 @@ def subgroups():
 @db_session
 @admin_required
 def roles():
-    return render_template('roles.j2', title='Roles', current_link='roles', roles={})
+    roles = Role.get_all()
+    return render_template('roles.j2', title='Roles', current_link='roles', roles=roles)
+
+
+@app_routes.route('/roles/<int:role_id>/edit', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def roles_edit(role_id):
+    pass
+
+
+@app_routes.route('/roles/<int:role_id>/edit', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def roles_remove(role_id):
+    pass
 
 
 @app_routes.route('/users', methods=['GET'])
@@ -315,7 +374,24 @@ def roles():
 @db_session
 @admin_required
 def users():
-    return render_template('users.j2', title='Users', current_link='users', users={})
+    users = User.get_all()
+    return render_template('users.j2', title='Users', current_link='users', users=users)
+
+
+@app_routes.route('/users/<int:user_id>/edit', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def users_edit():
+    pass
+
+
+@app_routes.route('/users/<int:user_id>/remove', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def users_remove():
+    pass
 
 
 @app_routes.route('/profile', methods=['GET'])
