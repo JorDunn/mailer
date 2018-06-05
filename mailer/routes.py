@@ -114,8 +114,6 @@ def queue_add():
             return redirect(url_for('.queue'))
     elif request.method == 'POST':
         if g.role.can_add_queue_items:
-            template = Template.get(tid=request.form.get('template'))
-            user = User.get(uid=g.user.uid)
             if Customer.exists(email=request.form.get('email')):
                 customer = Customer.get(email=request.form.get('email'))
                 if Queue.exists(customer=customer):
@@ -127,6 +125,8 @@ def queue_add():
                                     email=request.form.get('email'),
                                     added_on=datetime.now())
                 commit()
+            template = Template.get(tid=request.form.get('template'))
+            user = User.get(uid=g.user.uid)
             queue_item = Queue(customer=customer, user=user, template=template)
             customer.queue_item = queue_item
             commit()
@@ -157,6 +157,22 @@ def queue_remove(queue_id):
         return redirect(url_for('.queue'))
     else:
         return redirect(url_for('.queue'))
+
+
+@app_routes.route('/queue/<int:queue_id>/edit', methods=['GET', 'POST'])
+@login_required
+@db_session
+def queue_edit(queue_id):
+    if g.role.can_edit_queue_items:
+        if request.method == 'GET':
+            queue_item = Queue.get(qid=queue_id)
+            customer = Customer.get(cid=queue_item.customer.cid)
+            templates = Template.get_all()
+            return render_template('queue_edit.j2', title='Edit Customer in Queue', current_link='queue', queue_item=queue_item, customer=customer, templates=templates)
+        elif request.method == 'POST':
+            queue_item = Queue.get(qid=queue_id)
+            queue_item.template = Template.get(tid=request.form.get('template'))
+            return redirect(url_for('.queue'))
 
 
 @app_routes.route('/customers', methods=['GET'])

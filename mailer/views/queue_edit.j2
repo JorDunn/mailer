@@ -13,28 +13,28 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title text-center">Edit Customer</h5>
-            <form action="{{ url_for('mailer.routes.customers_edit', customer_id=customer.cid) }}" method="post">
+            <form action="{{ url_for('mailer.routes.queue_edit', queue_id=queue_item.qid) }}" method="post">
                 <div class="row">
                 <div class="form-group col-lg-6">
                     <label for="first_name">First Name</label>
-                    <input name="first_name" type="text" class="form-control" value="{{ customer.first_name }}">
+                    <input name="first_name" type="text" class="form-control" value="{{ customer.first_name }}" disabled>
                 </div>
                 <div class="form-group col-lg-6">
                     <label for="last_name">Last Name</label>
-                    <input name="last_name" type="text" class="form-control" value="{{ customer.last_name }}">
+                    <input name="last_name" type="text" class="form-control" value="{{ customer.last_name }}" disabled>
                 </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="email">Email</label>
-                        <input name="email" type="email" class="form-control" value="{{ customer.email }}">
+                        <input name="email" type="email" class="form-control" value="{{ customer.email }}" disabled>
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="template">Template</label>
                         <select name="template" class="form-control">
                             {% for template in templates.values() %}
-                            {% if template.tid == queue.template.tid %}
-                                <option value="{{ template.tid }}">{{ template.name }}</option>
+                            {% if template.tid == queue_item.template.tid %}
+                                <option value="{{ template.tid }}" selected>{{ template.name }}</option>
                             {% else %}
                                 <option value="{{ template.tid }}">{{ template.name }}</option>
                             {% endif %}

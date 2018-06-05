@@ -35,7 +35,7 @@
             <tbody>
                 {% for item in queue.values() %}
                     <tr>
-                        <td><a href="{{ url_for('.queue_edit', customer_id=item.cid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
+                        <td><a href="{{ url_for('.queue_edit', queue_id=item.qid) }}" style="color:navy"><span class="oi oi-pencil"></span></a></td>
                         <th scope="row">{{ item.email }}</th>
                         <td>{{ item.first_name }} {{ item.last_name }}</td>
                         <td>{{ item.template }}</td>
