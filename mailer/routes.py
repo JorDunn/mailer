@@ -344,6 +344,30 @@ def subgroups():
     return render_template('subgroups.j2', title='Subgroups', current_link='subgroups', subgroups=subgroups)
 
 
+@app_routes.route('/subgroups/add', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def subgroups_add():
+    pass
+
+
+@app_routes.route('/subgroups/<int:subgroup_id>/edit', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def subgroups_edit(subgroup_id):
+    pass
+
+
+@app_routes.route('/subgroups/<int:subgroup_id>/remove', methods=['GET'])
+@login_required
+@db_session
+@admin_required
+def subgroups_remove(subgroup_id):
+    pass
+
+
 @app_routes.route('/roles', methods=['GET'])
 @login_required
 @db_session
