@@ -385,7 +385,7 @@ def roles_edit(role_id):
     pass
 
 
-@app_routes.route('/roles/<int:role_id>/edit', methods=['GET'])
+@app_routes.route('/roles/<int:role_id>/remove', methods=['GET'])
 @login_required
 @db_session
 @admin_required
@@ -418,7 +418,8 @@ def users_remove():
     pass
 
 
-@app_routes.route('/profile', methods=['GET'])
+@app_routes.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    # GET RETURNS USERS INFO, POST ACCEPTS CHANGES PASSWORDS, ETC
     return render_template('profile.j2', title=f"{g.user.username}'s Profile", current_link='profile', user={})
