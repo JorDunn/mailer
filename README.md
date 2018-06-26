@@ -17,17 +17,10 @@ Cron can be used to send emails with postman.py on a set interval. I would highl
 You will most likely have to setup PATH in your crontab so it knows where pipenv is. I would also highly recommend setting up sendmail to email you if there are any errors. Amazon AWS has a really nice free tier that can be used to send emails and Zoho has free hosting with a custom domain if you need a mailbox. This project is not sponsored by either Amazon or Zoho, nor am I paid by them in any way.
 
 # TODO for v2.0
-* ~~flask-login integration.~~
-* ~~Fix models so that circular imports are avoided.~~
-* ~~Fix models so that Users and UserManager arn't needed. It should just be a User class.~~
-* I need to really setup tox and pytest. (current task)
+* I need to really setup tox and pytest.
 * Look into using Vue for part of the UI.
 * Use javascript/Vue to insert form into the pages with tables, using buttons to reveal/hide the form.
 * Expand mjml support to allow editing full template in mailer.
 * Allow users to preview template.
-* ~~Allow adding of customers to queue from customers page.~~
 * Change franchises to groups and a dropdown on the login form to select users group. This would allow for multiple users to have the same username in different groups.
 * Alternatively, have users login like an email address (e.g. user@group).
-* ~~Use flasks g object for user info, in unison with flask-login.~~
-* ~~Create more fine grain permissions for users.~~
-* ~~Remove Sessions. I don't think I really need to save them.~~
