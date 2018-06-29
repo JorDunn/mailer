@@ -22,4 +22,4 @@ You will most likely have to setup PATH in your crontab so it knows where pipenv
 * Use javascript/Vue to insert form into the pages with tables, using buttons to reveal/hide the form.
 * Expand mjml support to allow editing full template in mailer.
 * Allow users to preview template.
-* Alternatively, have users login like an email address (e.g. user@group).
+* have users login like an email address (e.g. user@group).

@@ -295,6 +295,20 @@ def groups():
     return render_template('groups.j2', title='Groups', current_link='groups', groups=groups)
 
 
+@app_routes.route('/groups/add', methods=['GET', 'POST'])
+@login_required
+@db_session
+@admin_required
+def groups_add():
+    if g.role.can_add_groups:
+        if request.method == 'GET':
+            return render_template('groups_add.j2', title='Add Group', current_link='groups')
+        elif request.method == 'POST':
+            Group()
+            commit()
+            return redirect('/groups')
+
+
 @app_routes.route('/groups/<int:group_id>', methods=['GET', 'POST'])
 @login_required
 @db_session
@@ -349,6 +363,7 @@ def subgroups():
 @db_session
 @admin_required
 def subgroups_add():
+
     pass
 
 
