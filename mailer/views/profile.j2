@@ -1,0 +1,25 @@
+{% extends "base.j2" %}
+
+{% block content %}
+<br/><br/>
+<div class="col-lg-10 offset-lg-1">
+    <div class="col-lg-12">
+        {% with messages = get_flashed_messages(category_filter=['profile_error']) %}
+        <div class="row">
+        {% for message in messages %}
+            <div class="col-sm-12 alert alert-warning" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+        {% endwith %}
+        <div class="row">
+            <div class="col-lg-6">
+            </div>
+            <div class="col-lg-6 text-right">
+                <h2>{{ g.user.username }}'s Profile</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
